@@ -1,23 +1,23 @@
 <style>
-/* Degradados superior e inferior fijos */
-.scroll-fade-top, .scroll-fade-bottom {
-  position: fixed;
-  left: 0;
-  right: 0;
-  height: 70px;        /* Ajusta según prefieras 50px*/
-  pointer-events: none; /* Para que no interfieran con clics */
-  z-index: 4;           /* Justo debajo del header sticky (z-index:5) */
-}
-.scroll-fade-top {
-  top: 0;
-  background: linear-gradient(to bottom, #f5edd8 50%, transparent);
-  /* background: linear-gradient(to bottom, #f5edd8, transparent); */
-}
-.scroll-fade-bottom {
-  bottom: 0px;         /* Deja espacio para el navbar inferior (ajusta según tu navbar) */
-  background: linear-gradient(to top, #f5edd8 50%, transparent);
-}
-  
+  /* Degradados superior e inferior fijos */
+  .scroll-fade-top,
+  .scroll-fade-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 70px;
+    pointer-events: none;
+    z-index: 4;
+  }
+  .scroll-fade-top {
+    top: 0;
+    background: linear-gradient(to bottom, #f5edd8 50%, transparent);
+  }
+  .scroll-fade-bottom {
+    bottom: 0px;
+    background: linear-gradient(to top, #f5edd8 50%, transparent);
+  }
+
   .card {
     background-color: var(--bg-card);
     border: var(--border-width) solid var(--text-dark);
@@ -28,6 +28,7 @@
     box-shadow: 0 var(--shadow-offset) 0 var(--text-dark);
     position: relative;
   }
+
   /* ===== Header fijo al hacer scroll ===== */
   .profile-card {
     display: flex;
@@ -37,7 +38,7 @@
     position: sticky;
     top: 10px;
     z-index: 5;
-    background-color: var(--bg-card); /* Para que no se vea transparente al solaparse */
+    background-color: var(--bg-card);
   }
   .profile-inner {
     display: flex;
@@ -91,7 +92,7 @@
   .settings-btn:active {
     transform: scale(0.95);
   }
-  
+
   /* Búsqueda + Filtro (en la misma fila) */
   .search-wrapper {
     display: flex;
@@ -102,12 +103,12 @@
   .search-input-wrap {
     position: relative;
     flex: 1;
-    border-bottom: 1px solid rgba(43,37,31,0.2);
+    border-bottom: 1px solid rgba(43, 37, 31, 0.2);
   }
   .search-input {
     width: 100%;
     padding: 8px 36px 8px 12px;
-    border: 0px solid rgba(43,37,31,0.2);
+    border: 0px solid rgba(43, 37, 31, 0.2);
     background: #ffffff00;
     font-family: 'Space Mono', monospace;
     font-size: 14px;
@@ -143,7 +144,7 @@
 
   .filter-toggle {
     background: #ffffff00;
-    border: 0px solid rgba(43,37,31,0.2);
+    border: 0px solid rgba(43, 37, 31, 0.2);
     padding: 0px 0px;
     font-family: 'Space Mono', monospace;
     font-weight: 700;
@@ -160,17 +161,12 @@
     transform: scale(0.95);
     color: #dda40d;
   }
-  
   .filter-toggle.active {
-    /*background: var(--text-dark);
-    color: var(--bg-card);*/
     color: #dda40d;
   }
-
   .filter-summary-hidden {
     display: none;
   }
-
   #filterDetails {
     margin-top: 6px;
   }
@@ -197,61 +193,88 @@
     background: var(--text-dark);
     color: var(--bg-card);
   }
-  
-  
-  
-  
+
+  /* ===== TARJETAS DE EJERCICIOS (ahora usan .card) ===== */
   .exercise-item {
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin-bottom: 8px;
+    /* padding, borde, sombra, fondo ya los hereda de .card */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(43,37,31,0.1);
+    gap: 12px;
+  }
+  .exercise-item:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 0 var(--text-dark);
   }
   .exercise-item:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
+  }
+  .exercise-emoji {
+    font-size: 32px;
+    width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .exercise-info {
+    flex: 1;
+    min-width: 0;
   }
   .exercise-name {
     font-weight: 700;
-    font-size: 15px;
+    font-size: 16px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .exercise-meta {
-    font-size: 12px;
+    font-size: 13px;
     opacity: 0.7;
-    margin-top: 2px;
+    margin: 2px 0 0 0;
   }
-  .exercise-actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 0 4px;
-    opacity: 0.5;
-    transition: opacity 0.1s;
-  }
-  .exercise-actions button:hover {
-    opacity: 1;
-  }
+
   .empty-message {
     text-align: center;
     opacity: 0.5;
     padding: 30px 0;
     font-size: 14px;
   }
-  .menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-    padding: 4px 8px;
-    border-radius: 10px;
-    background: var(--bg-card);
-    border: var(--border-width) solid var(--text-dark);
-    box-shadow: 0 3px 0 var(--text-dark);
-    line-height: 1;
+
+  /* Estilos para el contenido del modal de detalle */
+  .detail-group {
+    margin-bottom: 12px;
   }
-  .menu-btn:active {
-    transform: scale(0.95);
+  .detail-group strong {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.5;
+    margin-bottom: 2px;
+  }
+  .detail-group p {
+    margin: 0;
+    font-size: 15px;
+  }
+  .detail-desc {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(43, 37, 31, 0.1);
+  }
+  .detail-desc p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+
+  /* Asegurar que #exerciseList ocupe todo el ancho y no tenga padding extra */
+  #exerciseList {
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
   }
 </style>
 
@@ -275,7 +298,7 @@
   </div>
 </div>
 
-<!-- Búsqueda + Filtro (en la misma fila) -->
+<!-- Búsqueda + Filtro -->
 <div class="card">
   <div class="search-wrapper">
     <div class="search-input-wrap">
@@ -290,49 +313,93 @@
   </div>
   <details id="filterDetails">
     <summary class="filter-summary-hidden"></summary>
-    <div class="filter-options" id="filterOptions">
-    </div>
+    <div class="filter-options" id="filterOptions"></div>
   </details>
 </div>
 
 <div class="section-label">Lista ejercicios</div>
 
-<!-- Lista de ejercicios -->
-<div class="card" style="padding-bottom: 8px;">
-  <div id="exerciseList">
-  </div>
-</div>
+<!-- Lista de ejercicios (cada ejercicio es un .card) -->
+<div id="exerciseList"></div>
 
 <script>
-  // Datos iniciales (ejemplo)
-  let ejercicios = [
-    { id: 1, nombre: "Press de banca", grupo: "Pecho", nivel: "Intermedio" },
-    { id: 2, nombre: "Sentadilla", grupo: "Pierna", nivel: "Avanzado" },
-    { id: 3, nombre: "Remo con barra", grupo: "Espalda", nivel: "Intermedio" },
-    { id: 4, nombre: "Curl de bíceps", grupo: "Brazos", nivel: "Principiante" },
-    { id: 5, nombre: "Fondos en paralelas", grupo: "Pecho", nivel: "Avanzado" },
-    { id: 6, nombre: "Peso muerto", grupo: "Pierna", nivel: "Avanzado" },
-  ];
+  // ============================================================
+  //  DATOS
+  // ============================================================
+  let ejercicios = [{
+    id: 1,
+    nombre: "Press de banca",
+    grupo: "Pecho",
+    nivel: "Intermedio",
+    descripcion: "Ejercicio básico para desarrollar pectorales. Acostado en banco plano, levanta la barra con agarre ligeramente más ancho que los hombros. Baja controladamente hasta tocar el pecho y empuja hacia arriba."
+  }, {
+    id: 2,
+    nombre: "Sentadilla",
+    grupo: "Pierna",
+    nivel: "Avanzado",
+    descripcion: "Movimiento fundamental para pierna y glúteo. Coloca la barra sobre los trapecios, baja hasta que los muslos queden paralelos al suelo, manteniendo la espalda recta y el pecho erguido."
+  }, {
+    id: 3,
+    nombre: "Remo con barra",
+    grupo: "Espalda",
+    nivel: "Intermedio",
+    descripcion: "Ejercicio para la espalda media y dorsal ancho. Inclínate hacia adelante con la barra, tira de ella hacia el abdomen manteniendo los codos pegados al cuerpo."
+  }, {
+    id: 4,
+    nombre: "Curl de bíceps",
+    grupo: "Brazos",
+    nivel: "Principiante",
+    descripcion: "Aísla el bíceps. De pie o sentado, con las pesas a los lados, flexiona los codos llevando las pesas hacia los hombros, controlando el descenso."
+  }, {
+    id: 5,
+    nombre: "Fondos en paralelas",
+    grupo: "Pecho",
+    nivel: "Avanzado",
+    descripcion: "Ejercicio de empuje para pectoral inferior y tríceps. En paralelas, baja el cuerpo hasta que los hombros estén por debajo de los codos, luego empuja hacia arriba."
+  }, {
+    id: 6,
+    nombre: "Peso muerto",
+    grupo: "Pierna",
+    nivel: "Avanzado",
+    descripcion: "Levantamiento de barra desde el suelo. Con pies separados al ancho de caderas, agarra la barra, mantén la espalda recta y levanta extendiendo caderas y rodillas."
+  }];
 
-  // Cargar desde localStorage si existe
+  // Cargar desde localStorage
   const stored = localStorage.getItem('ejercicios');
   if (stored) {
     try {
-      ejercicios = JSON.parse(stored);
-    } catch(e) {}
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length) ejercicios = parsed;
+    } catch (e) {}
   }
 
-  let filtroGrupo = null; // null = todos
+  let filtroGrupo = null;
 
   function guardarEjercicios() {
     localStorage.setItem('ejercicios', JSON.stringify(ejercicios));
   }
 
-  // Renderizar lista
+  // ============================================================
+  //  MAPA DE EMOJIS POR GRUPO
+  // ============================================================
+  const emojiMap = {
+    'Pecho': '🏋️',
+    'Espalda': '🔱',
+    'Pierna': '🦵',
+    'Brazos': '💪',
+    'Hombros': '🏋️‍♂️',
+    'Abdomen': '🫀',
+    'Cardio': '🏃',
+    'Otro': '🎯'
+  };
+
+  // ============================================================
+  //  RENDERIZADO DE LISTA (tarjetas)
+  // ============================================================
   function renderizarLista() {
     const container = document.getElementById('exerciseList');
     const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-    
+
     let filtrados = ejercicios;
     if (filtroGrupo) {
       filtrados = filtrados.filter(e => e.grupo === filtroGrupo);
@@ -348,45 +415,198 @@
 
     let html = '';
     filtrados.forEach(ej => {
+      const emoji = emojiMap[ej.grupo] || '🏋️';
       html += `
-        <div class="exercise-item" data-id="${ej.id}">
-          <div>
+        <div class="card exercise-item" data-id="${ej.id}">
+          <div class="exercise-emoji">${emoji}</div>
+          <div class="exercise-info">
             <div class="exercise-name">${ej.nombre}</div>
             <div class="exercise-meta">${ej.grupo} · ${ej.nivel}</div>
-          </div>
-          <div class="exercise-actions">
-            <button class="edit-exercise" data-id="${ej.id}" title="Editar">✏️</button>
-            <button class="delete-exercise" data-id="${ej.id}" title="Eliminar">🗑️</button>
           </div>
         </div>
       `;
     });
     container.innerHTML = html;
 
-    // Eventos de editar/eliminar
-    container.querySelectorAll('.edit-exercise').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
+    // Click en tarjeta → abrir detalle
+    container.querySelectorAll('.exercise-item').forEach(card => {
+      card.addEventListener('click', function() {
         const id = parseInt(this.dataset.id);
         const ejercicio = ejercicios.find(e => e.id === id);
-        if (ejercicio) abrirFormularioEdicion(ejercicio);
-      });
-    });
-    container.querySelectorAll('.delete-exercise').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const id = parseInt(this.dataset.id);
-        mostrarConfirmacion('Eliminar ejercicio', '¿Estás seguro de eliminar este ejercicio?', () => {
-          ejercicios = ejercicios.filter(e => e.id !== id);
-          guardarEjercicios();
-          actualizarFiltros();
-          renderizarLista();
-        });
+        if (ejercicio) mostrarDetalleEjercicio(ejercicio);
       });
     });
   }
 
-  // Actualizar filtros (grupos disponibles)
+  // ============================================================
+  //  MODAL DE DETALLE
+  // ============================================================
+  function mostrarDetalleEjercicio(ejercicio) {
+    const emoji = emojiMap[ejercicio.grupo] || '🏋️';
+    const desc = ejercicio.descripcion || 'Sin descripción.';
+
+    const contenido = `
+      <div class="detail-group">
+        <strong>Grupo muscular</strong>
+        <p>${ejercicio.grupo}</p>
+      </div>
+      <div class="detail-group">
+        <strong>Nivel</strong>
+        <p>${ejercicio.nivel}</p>
+      </div>
+      <div class="detail-desc">
+        <strong>Descripción</strong>
+        <p>${desc}</p>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+        <button class="modal-boton primario" id="btnEditarDesdeDetalle">✏️ Editar</button>
+      </div>
+    `;
+
+    const modalRef = mostrarModal({
+      titulo: `${emoji} ${ejercicio.nombre}`,
+      contenido: contenido,
+      botones: [] // sin botones automáticos
+    });
+
+    const btnEditar = document.getElementById('btnEditarDesdeDetalle');
+    if (btnEditar) {
+      btnEditar.addEventListener('click', function() {
+        modalRef.cerrar();
+        setTimeout(() => abrirFormularioEdicion(ejercicio), 200);
+      });
+    }
+  }
+
+  // ============================================================
+  //  FORMULARIO DE EDICIÓN / NUEVO
+  // ============================================================
+  function abrirFormularioEdicion(ejercicio = null) {
+    fetch('views/ejercicios/formularioejercicios.html')
+      .then(res => {
+        if (!res.ok) throw new Error('No se pudo cargar el formulario');
+        return res.text();
+      })
+      .then(html => {
+        // Mostrar modal con el formulario
+        mostrarModal({
+          titulo: ejercicio ? '✏️ Editar ejercicio' : '➕ Nuevo ejercicio',
+          contenido: html,
+          botones: []
+        });
+
+        // Esperar a que el DOM del modal esté listo y rellenar campos
+        requestAnimationFrame(() => {
+          const form = document.getElementById('ejercicioForm');
+          if (!form) {
+            console.error('No se encontró el formulario');
+            return;
+          }
+
+          const nombreInput = document.getElementById('nombreEjercicio');
+          const grupoSelect = document.getElementById('grupoEjercicio');
+          const nivelSelect = document.getElementById('nivelEjercicio');
+          const descTextarea = document.getElementById('descripcionEjercicio');
+          const idInput = document.getElementById('idEjercicio');
+          const deleteContainer = document.getElementById('deleteButtonContainer');
+          const btnEliminar = document.getElementById('btnEliminarEjercicio');
+          const cancelBtn = document.getElementById('formCancelar');
+
+          // Si es edición, rellenar campos
+          if (ejercicio && ejercicio.id) {
+            if (nombreInput) nombreInput.value = ejercicio.nombre;
+            if (grupoSelect) grupoSelect.value = ejercicio.grupo;
+            if (nivelSelect) nivelSelect.value = ejercicio.nivel;
+            if (descTextarea) descTextarea.value = ejercicio.descripcion || '';
+            if (idInput) idInput.value = ejercicio.id;
+            if (deleteContainer) deleteContainer.style.display = 'block';
+
+            // Evento eliminar
+            if (btnEliminar) {
+              btnEliminar.onclick = null;
+              btnEliminar.addEventListener('click', function() {
+                mostrarConfirmacion(
+                  '🗑️ Eliminar ejercicio',
+                  `¿Estás seguro de eliminar "${ejercicio.nombre}"? Esta acción no se puede deshacer.`,
+                  () => {
+                    ejercicios = ejercicios.filter(e => e.id !== ejercicio.id);
+                    guardarEjercicios();
+                    actualizarFiltros();
+                    renderizarLista();
+                    // Cerrar modales
+                    const overlay = document.querySelector('.modal-overlay');
+                    if (overlay) {
+                      overlay.classList.remove('active');
+                      setTimeout(() => overlay.remove(), 200);
+                    }
+                  }
+                );
+              });
+            }
+          } else {
+            if (deleteContainer) deleteContainer.style.display = 'none';
+            if (idInput) idInput.value = '';
+            if (nombreInput) nombreInput.value = '';
+            if (grupoSelect) grupoSelect.value = 'Pecho';
+            if (nivelSelect) nivelSelect.value = 'Principiante';
+            if (descTextarea) descTextarea.value = '';
+          }
+
+          // Evento submit del formulario
+          form.onsubmit = function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombreEjercicio').value.trim();
+            const grupo = document.getElementById('grupoEjercicio').value;
+            const nivel = document.getElementById('nivelEjercicio').value;
+            const descripcion = document.getElementById('descripcionEjercicio').value.trim();
+            const id = document.getElementById('idEjercicio').value;
+
+            if (!nombre) {
+              mostrarAlerta('Error', 'El nombre es obligatorio');
+              return;
+            }
+
+            const datos = { nombre, grupo, nivel, descripcion };
+            if (id) {
+              datos.id = parseInt(id);
+              const index = ejercicios.findIndex(e => e.id === datos.id);
+              if (index !== -1) {
+                ejercicios[index] = { ...ejercicios[index], ...datos };
+              }
+            } else {
+              const nuevoId = ejercicios.length ? Math.max(...ejercicios.map(e => e.id)) + 1 : 1;
+              ejercicios.push({ id: nuevoId, ...datos });
+            }
+            guardarEjercicios();
+            actualizarFiltros();
+            renderizarLista();
+            cerrarModalActual();
+          };
+
+          if (cancelBtn) {
+            cancelBtn.onclick = function() {
+              cerrarModalActual();
+            };
+          }
+
+          function cerrarModalActual() {
+            const overlay = document.querySelector('.modal-overlay');
+            if (overlay) {
+              overlay.classList.remove('active');
+              setTimeout(() => overlay.remove(), 200);
+            }
+          }
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        mostrarAlerta('Error', 'No se pudo cargar el formulario.');
+      });
+  }
+
+  // ============================================================
+  //  FILTROS (grupos)
+  // ============================================================
   function actualizarFiltros() {
     const grupos = [...new Set(ejercicios.map(e => e.grupo))].sort();
     const container = document.getElementById('filterOptions');
@@ -411,91 +631,9 @@
     });
   }
 
-  // Abrir formulario (nuevo o edición)
-  function abrirFormularioEdicion(ejercicio = null) {
-    fetch(`views/ejercicios/formularioejercicios.html`)
-      .then(res => {
-        if (!res.ok) throw new Error('No se pudo cargar el formulario');
-        return res.text();
-      })
-      .then(html => {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = html;
-        if (ejercicio) {
-          const nombreInput = wrapper.querySelector('#nombreEjercicio');
-          const grupoSelect = wrapper.querySelector('#grupoEjercicio');
-          const nivelSelect = wrapper.querySelector('#nivelEjercicio');
-          const idInput = wrapper.querySelector('#idEjercicio');
-          if (nombreInput) nombreInput.value = ejercicio.nombre;
-          if (grupoSelect) grupoSelect.value = ejercicio.grupo;
-          if (nivelSelect) nivelSelect.value = ejercicio.nivel;
-          if (idInput) idInput.value = ejercicio.id;
-        }
-
-        mostrarModal({
-          titulo: ejercicio ? 'Editar ejercicio' : 'Nuevo ejercicio',
-          contenido: wrapper.innerHTML,
-          botones: []
-        });
-
-        const form = document.getElementById('ejercicioForm');
-        const cancelBtn = document.getElementById('formCancelar');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nombre = document.getElementById('nombreEjercicio').value.trim();
-            const grupo = document.getElementById('grupoEjercicio').value;
-            const nivel = document.getElementById('nivelEjercicio').value;
-            const id = document.getElementById('idEjercicio').value;
-            if (!nombre) {
-              mostrarAlerta('Error', 'El nombre es obligatorio');
-              return;
-            }
-            const datos = { nombre, grupo, nivel };
-            if (id) datos.id = parseInt(id);
-            if (window.agregarEjercicio) {
-              window.agregarEjercicio(datos);
-            }
-          });
-        }
-        if (cancelBtn) {
-          cancelBtn.addEventListener('click', function() {
-            const overlay = document.querySelector('.modal-overlay');
-            if (overlay) {
-              overlay.classList.remove('active');
-              setTimeout(() => overlay.remove(), 200);
-            }
-          });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        mostrarAlerta('Error', 'No se pudo cargar el formulario.');
-      });
-  }
-
-  // Función global para añadir/editar (la usará el formulario)
-  window.agregarEjercicio = function(datos) {
-    if (datos.id) {
-      const index = ejercicios.findIndex(e => e.id === datos.id);
-      if (index !== -1) {
-        ejercicios[index] = { ...ejercicios[index], ...datos };
-      }
-    } else {
-      const nuevoId = ejercicios.length ? Math.max(...ejercicios.map(e => e.id)) + 1 : 1;
-      ejercicios.push({ id: nuevoId, ...datos });
-    }
-    guardarEjercicios();
-    actualizarFiltros();
-    renderizarLista();
-    const modalOverlay = document.querySelector('.modal-overlay');
-    if (modalOverlay) {
-      modalOverlay.classList.remove('active');
-      setTimeout(() => modalOverlay.remove(), 200);
-    }
-  };
-
-  // ===== INICIALIZACIÓN =====
+  // ============================================================
+  //  INICIALIZACIÓN
+  // ============================================================
   window.initEjercicios = function() {
     console.log('Inicializando Ejercicios');
     renderizarLista();
@@ -506,13 +644,8 @@
     const filterToggle = document.getElementById('filterToggle');
     const filterDetails = document.getElementById('filterDetails');
 
-    // Mostrar/ocultar X al escribir
     function toggleClearButton() {
-      if (searchInput.value.length > 0) {
-        searchClear.classList.add('visible');
-      } else {
-        searchClear.classList.remove('visible');
-      }
+      searchClear.classList.toggle('visible', searchInput.value.length > 0);
     }
     searchInput.addEventListener('input', function() {
       renderizarLista();
@@ -526,7 +659,6 @@
     });
     toggleClearButton();
 
-    // Toggle del filtro
     filterToggle.addEventListener('click', function() {
       if (filterDetails.hasAttribute('open')) {
         filterDetails.removeAttribute('open');
@@ -537,46 +669,45 @@
       }
     });
 
-    // ===== NUEVO: Botón de ajustes con cambio de icono y scroll =====
+    // ===== Botón de ajustes (cambia icono al hacer scroll) =====
     const settingsBtn = document.getElementById('settingsBtnLifebar');
     let isAtTop = true;
 
     function updateButtonIcon() {
       const isScrolled = window.scrollY > 10;
       if (isScrolled && isAtTop) {
-        // Cambiar a flecha hacia arriba
-        settingsBtn.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`;
+        settingsBtn.innerHTML =
+          `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`;
         isAtTop = false;
       } else if (!isScrolled && !isAtTop) {
-        // Restaurar engranaje
-        settingsBtn.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5" stroke-linejoin="miter"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`;
+        settingsBtn.innerHTML =
+          `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5" stroke-linejoin="miter"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`;
         isAtTop = true;
       }
     }
 
     window.addEventListener('scroll', updateButtonIcon);
-    updateButtonIcon(); // estado inicial
+    updateButtonIcon();
 
-    // Click condicional: menú contextual si está arriba, scroll al inicio si está abajo
     settingsBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       if (isAtTop) {
-        // Mostrar menú contextual (solo dos opciones)
-        const opciones = [
-          { label: '➕ Nuevo ejercicio', callback: () => abrirFormularioEdicion(null) },
-          { label: '🗑️ Borrar todos', callback: () => {
-              mostrarConfirmacion('Borrar todos', '¿Eliminar todos los ejercicios?', () => {
-                ejercicios = [];
-                guardarEjercicios();
-                actualizarFiltros();
-                renderizarLista();
-              });
-            }
+        const opciones = [{
+          label: '➕ Nuevo ejercicio',
+          callback: () => abrirFormularioEdicion(null)
+        }, {
+          label: '🗑️ Borrar todos',
+          callback: () => {
+            mostrarConfirmacion('Borrar todos', '¿Eliminar todos los ejercicios?', () => {
+              ejercicios = [];
+              guardarEjercicios();
+              actualizarFiltros();
+              renderizarLista();
+            });
           }
-        ];
+        }];
         mostrarMenuContextual(opciones, e);
       } else {
-        // Scroll suave al inicio
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
