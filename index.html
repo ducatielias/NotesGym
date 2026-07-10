@@ -79,6 +79,24 @@
     .nav-item:focus:not(:focus-visible) {
       outline: none;
     }
+    /* Eliminar resaltado táctil en móviles */
+    button,
+    .nav-item,
+    .menu-btn,
+    .modal-boton,
+    .filter-tag,
+    .day-pill,
+    .calendar-icon-btn,
+    .settings-btn,
+    .arrow-icon,
+    a,
+    [role="button"],
+    input,
+    select,
+    textarea {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
 
     .section-label {
       width: 100%;

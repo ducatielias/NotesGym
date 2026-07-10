@@ -1,41 +1,152 @@
 <style>
-  /* Estilos específicos para ejercicios */
-  .search-input {
+  .card {
+    background-color: var(--bg-card);
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: var(--card-radius);
     width: 100%;
-    padding: 8px 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 var(--shadow-offset) 0 var(--text-dark);
+    position: relative;
+  }
+  /* ===== Header fijo al hacer scroll ===== */
+  .profile-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: sticky;
+    top: 20px;
+    z-index: 5;
+    background-color: var(--bg-card); /* Para que no se vea transparente al solaparse */
+  }
+  .profile-inner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+    justify-content: space-between;
+  }
+  .avatar-pixel {
+    width: 46px;
+    height: 46px;
+    background-color: #dfd7c2;
     border: var(--border-width) solid var(--text-dark);
     border-radius: 14px;
-    background: var(--bg-card);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 0 var(--text-dark);
+    font-size: 24px;
+  }
+  .profile-info {
+    min-width: 0;
+    padding-top: 2px;
+  }
+  .profile-name-large {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .settings-btn {
+    width: 46px;
+    height: 46px;
+    background-color: #dfd7c2;
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 0 var(--text-dark);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .settings-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Búsqueda + Filtro (en la misma fila) */
+  .search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .search-input-wrap {
+    position: relative;
+    flex: 1;
+    border-bottom: 1px solid rgba(43,37,31,0.2);
+  }
+  .search-input {
+    width: 100%;
+    padding: 8px 36px 8px 12px;
+    border: 0px solid rgba(43,37,31,0.2);
+    background: #ffffff00;
     font-family: 'Space Mono', monospace;
     font-size: 14px;
     box-sizing: border-box;
-    box-shadow: 0 3px 0 var(--text-dark);
+    box-shadow: 0 0px 0 var(--text-dark);
     outline: none;
   }
   .search-input:focus {
     box-shadow: 0 3px 0 var(--accent-orange);
     border-color: var(--accent-orange);
   }
-  .filter-section {
-    margin-top: 8px;
-  }
-  .filter-summary {
+  .search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
     cursor: pointer;
+    color: var(--text-dark);
+    opacity: 0.6;
+    padding: 0;
+    display: none;
+    line-height: 1;
+  }
+  .search-clear.visible {
+    display: block;
+  }
+  .search-clear:hover {
+    opacity: 1;
+  }
+
+  .filter-toggle {
+    background: #ffffff00;
+    border: 0px solid rgba(43,37,31,0.2);
+    padding: 0px 0px;
+    font-family: 'Space Mono', monospace;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 26px;
+    cursor: pointer;
+    white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(43,37,31,0.2);
+    gap: 8px;
+    transition: all 0.1s;
+    flex-shrink: 0;
   }
-  .filter-summary::-webkit-details-marker {
+  .filter-toggle:active {
+    transform: scale(0.95);
+  }
+
+  .filter-summary-hidden {
     display: none;
   }
-  .filter-summary::before {
-    content: "▶";
-    font-size: 12px;
-    transition: transform 0.2s;
+
+  #filterDetails {
+    margin-top: 6px;
   }
   details[open] .filter-summary::before {
     transform: rotate(90deg);
@@ -60,6 +171,7 @@
     background: var(--text-dark);
     color: var(--bg-card);
   }
+  
   .exercise-item {
     display: flex;
     justify-content: space-between;
@@ -114,22 +226,37 @@
   }
 </style>
 
-<div class="card">
-  <div class="card-header">
-    <div class="card-title">🏋️ Ejercicios</div>
-    <button class="menu-btn" id="ejerciciosMenuBtn" title="Opciones">⚙️</button>
+<!-- Header -->
+<div class="card profile-card">
+  <div class="profile-inner">
+    <div class="avatar-pixel">🏋️</div>
+    <div class="profile-info">
+      <h2 class="profile-name-large">Ejercicios</h2>
+    </div>
+    <button class="settings-btn" id="settingsBtnLifebar">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5" stroke-linejoin="miter">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
   </div>
 </div>
 
-<!-- Búsqueda -->
+<!-- Búsqueda + Filtro (en la misma fila) -->
 <div class="card">
-  <input type="text" class="search-input" id="searchInput" placeholder="Buscar ejercicio...">
-</div>
-
-<!-- Filtros expandibles -->
-<div class="card filter-section">
+  <div class="search-wrapper">
+    <div class="search-input-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar ejercicio...">
+      <button class="search-clear" id="searchClear" aria-label="Borrar texto">✕</button>
+    </div>
+    <button class="filter-toggle" id="filterToggle">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24" height="24" fill="currentColor">
+        <path d="M96 128C83.1 128 71.4 135.8 66.4 147.8C61.4 159.8 64.2 173.5 73.4 182.6L256 365.3L256 480C256 488.5 259.4 496.6 265.4 502.6L329.4 566.6C338.6 575.8 352.3 578.5 364.3 573.5C376.3 568.5 384 556.9 384 544L384 365.3L566.6 182.7C575.8 173.5 578.5 159.8 573.5 147.8C568.5 135.8 556.9 128 544 128L96 128z"/>
+      </svg>
+    </button>
+  </div>
   <details id="filterDetails">
-    <summary class="filter-summary">Filtros</summary>
+    <summary class="filter-summary-hidden"></summary>
     <div class="filter-options" id="filterOptions">
     </div>
   </details>
@@ -242,7 +369,6 @@
       tag.addEventListener('click', function() {
         const grupo = this.dataset.grupo || null;
         filtroGrupo = grupo;
-        // Actualizar clases activas
         container.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
         this.classList.add('active');
         renderizarLista();
@@ -252,7 +378,6 @@
 
   // Abrir formulario (nuevo o edición)
   function abrirFormularioEdicion(ejercicio = null) {
-
     fetch(`views/ejercicios/formularioejercicios.html`)
       .then(res => {
         if (!res.ok) throw new Error('No se pudo cargar el formulario');
@@ -261,7 +386,6 @@
       .then(html => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = html;
-        // Rellenar si es edición
         if (ejercicio) {
           const nombreInput = wrapper.querySelector('#nombreEjercicio');
           const grupoSelect = wrapper.querySelector('#grupoEjercicio');
@@ -273,14 +397,12 @@
           if (idInput) idInput.value = ejercicio.id;
         }
 
-        // Mostrar modal con contenido
         mostrarModal({
           titulo: ejercicio ? 'Editar ejercicio' : 'Nuevo ejercicio',
           contenido: wrapper.innerHTML,
-          botones: [] // no usamos botones del modal, los manejamos en el formulario
+          botones: []
         });
 
-        // Ahora el formulario está en el DOM, lo capturamos
         const form = document.getElementById('ejercicioForm');
         const cancelBtn = document.getElementById('formCancelar');
         if (form) {
@@ -296,7 +418,6 @@
             }
             const datos = { nombre, grupo, nivel };
             if (id) datos.id = parseInt(id);
-            // Llamar a la función global para agregar/editar
             if (window.agregarEjercicio) {
               window.agregarEjercicio(datos);
             }
@@ -304,7 +425,6 @@
         }
         if (cancelBtn) {
           cancelBtn.addEventListener('click', function() {
-            // Cerrar modal
             const overlay = document.querySelector('.modal-overlay');
             if (overlay) {
               overlay.classList.remove('active');
@@ -322,20 +442,17 @@
   // Función global para añadir/editar (la usará el formulario)
   window.agregarEjercicio = function(datos) {
     if (datos.id) {
-      // Edición
       const index = ejercicios.findIndex(e => e.id === datos.id);
       if (index !== -1) {
         ejercicios[index] = { ...ejercicios[index], ...datos };
       }
     } else {
-      // Nuevo
       const nuevoId = ejercicios.length ? Math.max(...ejercicios.map(e => e.id)) + 1 : 1;
       ejercicios.push({ id: nuevoId, ...datos });
     }
     guardarEjercicios();
     actualizarFiltros();
     renderizarLista();
-    // Cerrar modal (si existe)
     const modalOverlay = document.querySelector('.modal-overlay');
     if (modalOverlay) {
       modalOverlay.classList.remove('active');
@@ -343,73 +460,90 @@
     }
   };
 
-  // Inicializar
+  // ===== INICIALIZACIÓN =====
   window.initEjercicios = function() {
     console.log('Inicializando Ejercicios');
     renderizarLista();
     actualizarFiltros();
 
-    // Búsqueda
-    document.getElementById('searchInput').addEventListener('input', renderizarLista);
+    const searchInput = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+    const filterToggle = document.getElementById('filterToggle');
+    const filterDetails = document.getElementById('filterDetails');
 
-    // Menú contextual
-    const menuBtn = document.getElementById('ejerciciosMenuBtn');
-    menuBtn.addEventListener('click', function(e) {
+    // Mostrar/ocultar X al escribir
+    function toggleClearButton() {
+      if (searchInput.value.length > 0) {
+        searchClear.classList.add('visible');
+      } else {
+        searchClear.classList.remove('visible');
+      }
+    }
+    searchInput.addEventListener('input', function() {
+      renderizarLista();
+      toggleClearButton();
+    });
+    searchClear.addEventListener('click', function() {
+      searchInput.value = '';
+      renderizarLista();
+      toggleClearButton();
+      searchInput.focus();
+    });
+    toggleClearButton();
+
+    // Toggle del filtro
+    filterToggle.addEventListener('click', function() {
+      if (filterDetails.hasAttribute('open')) {
+        filterDetails.removeAttribute('open');
+        filterToggle.classList.remove('active');
+      } else {
+        filterDetails.setAttribute('open', '');
+        filterToggle.classList.add('active');
+      }
+    });
+
+    // ===== NUEVO: Botón de ajustes con cambio de icono y scroll =====
+    const settingsBtn = document.getElementById('settingsBtnLifebar');
+    let isAtTop = true;
+
+    function updateButtonIcon() {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled && isAtTop) {
+        // Cambiar a flecha hacia arriba
+        settingsBtn.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`;
+        isAtTop = false;
+      } else if (!isScrolled && !isAtTop) {
+        // Restaurar engranaje
+        settingsBtn.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5" stroke-linejoin="miter"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`;
+        isAtTop = true;
+      }
+    }
+
+    window.addEventListener('scroll', updateButtonIcon);
+    updateButtonIcon(); // estado inicial
+
+    // Click condicional: menú contextual si está arriba, scroll al inicio si está abajo
+    settingsBtn.addEventListener('click', function(e) {
       e.stopPropagation();
-      const opciones = [
-        { label: '➕ Nuevo ejercicio', callback: () => abrirFormularioEdicion(null) },
-        { label: '📥 Importar ejercicios', callback: () => {
-            // Implementación simple: input file
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(ev) {
-              const file = ev.target.files[0];
-              if (!file) return;
-              const reader = new FileReader();
-              reader.onload = function(e) {
-                try {
-                  const imported = JSON.parse(e.target.result);
-                  if (Array.isArray(imported)) {
-                    ejercicios = imported;
-                    guardarEjercicios();
-                    actualizarFiltros();
-                    renderizarLista();
-                    mostrarAlerta('Éxito', 'Ejercicios importados correctamente');
-                  } else {
-                    mostrarAlerta('Error', 'El archivo no tiene un formato válido');
-                  }
-                } catch(err) {
-                  mostrarAlerta('Error', 'No se pudo leer el archivo');
-                }
-              };
-              reader.readAsText(file);
-            };
-            input.click();
+      if (isAtTop) {
+        // Mostrar menú contextual (solo dos opciones)
+        const opciones = [
+          { label: '➕ Nuevo ejercicio', callback: () => abrirFormularioEdicion(null) },
+          { label: '🗑️ Borrar todos', callback: () => {
+              mostrarConfirmacion('Borrar todos', '¿Eliminar todos los ejercicios?', () => {
+                ejercicios = [];
+                guardarEjercicios();
+                actualizarFiltros();
+                renderizarLista();
+              });
+            }
           }
-        },
-        { label: '📤 Exportar ejercicios', callback: () => {
-            const data = JSON.stringify(ejercicios);
-            const blob = new Blob([data], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'ejercicios.json';
-            a.click();
-            URL.revokeObjectURL(url);
-          }
-        },
-        { label: '🗑️ Borrar todos', callback: () => {
-            mostrarConfirmacion('Borrar todos', '¿Eliminar todos los ejercicios?', () => {
-              ejercicios = [];
-              guardarEjercicios();
-              actualizarFiltros();
-              renderizarLista();
-            });
-          }
-        }
-      ];
-      mostrarMenuContextual(opciones, e);
+        ];
+        mostrarMenuContextual(opciones, e);
+      } else {
+        // Scroll suave al inicio
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
   };
 </script>
