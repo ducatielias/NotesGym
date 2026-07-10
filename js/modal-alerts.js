@@ -80,13 +80,25 @@ function injectModalStyles() {
     pointer-events: auto;
   }
   .modal-box {
-    background-color: #fffbf4;
+    /*background-color: #fffbf4;
     border: 2.5px solid #2b251f;
     border-radius: 24px;
     padding: 24px 28px 28px 28px;
     max-width: 400px;
     width: 90%;
     box-shadow: 0 4px 0 #2b251f;
+    font-family: 'Space Mono', monospace;
+    transform: scale(0.95);
+    transition: transform 0.2s ease;*/
+    
+    background-color: var(--bg-card);
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: var(--card-radius);
+    padding: 24px 28px 28px 28px;
+    max-width: 90%;      /* ← igual que el contenedor de timeline */
+    width: 100%;           /* ← ocupa todo el espacio hasta max-width */
+    box-sizing: border-box;
+    box-shadow: 0 var(--shadow-offset) 0 var(--text-dark);
     font-family: 'Space Mono', monospace;
     transform: scale(0.95);
     transition: transform 0.2s ease;
@@ -186,7 +198,11 @@ function mostrarModal(opciones) {
   }
 
   // Mensaje
-  if (mensaje) {
+  if (opciones.contenido) {
+    const div = document.createElement('div');
+    div.innerHTML = opciones.contenido;
+    box.appendChild(div);
+  } else if (mensaje) {
     const p = document.createElement('p');
     p.className = 'modal-mensaje';
     p.textContent = mensaje;

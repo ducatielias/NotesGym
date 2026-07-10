@@ -1,14 +1,9 @@
 /**
  * 📄 Uso mínimo en cualquier HTML
  * Ahora solo necesitas importar el script:
-
- * html
  * <script src="menu-contextual.js"></script>
  * Y usarlo en cualquier elemento:
-
- * html
  * <button id="miBoton">Abrir menú</button>
-
  * <script>
  *   document.getElementById('miBoton').addEventListener('click', function(e) {
  *     mostrarMenuContextual([
@@ -21,22 +16,20 @@
  * No necesitas incluir nada en el <head> ni copiar reglas CSS.
  */
 function injectMenuStyles() {
-  // Evitar duplicados: comprobamos si ya hay un style con este ID
   if (document.getElementById('menu-contextual-styles')) return;
 
   const styles = `
   /* ===== MENÚ CONTEXTUAL ===== */
   .dropdown-menu {
-    position: fixed;
+    position: absolute;
+    width: auto !important;
+    max-width: 90vw;
+    height: auto;
     background-color: #fffbf4;
-  /*background-color: var(--bg-card);*/
     border: 2.5px solid #2b251f;
-  /*border: var(--border-width) solid var(--text-dark);*/
     border-radius: 16px;
     padding: 6px 0;
-    min-width: 180px;
     box-shadow: 0 4px 0 #2b251f;
-  /*box-shadow: 0 var(--shadow-offset) 0 var(--text-dark);*/
     z-index: 10000;
     display: none;
     opacity: 0;
@@ -60,13 +53,13 @@ function injectMenuStyles() {
     border-bottom: 1px solid rgba(43, 37, 31, 0.1);
     transition: background 0.1s;
     color: #2b251f;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
   }
   .dropdown-item:last-child {
     border-bottom: none;
   }
   .dropdown-item:hover {
-    background-color: #f5edd8;
-  /*background-color: var(--bg-main);*/
+    color: #dda40d;
   }
   .dropdown-item span {
     opacity: 0.7;
@@ -100,21 +93,20 @@ function injectMenuStyles() {
  * @param {MouseEvent|HTMLElement} evento - Evento de ratón o elemento DOM al que anclar el menú.
  */
 function mostrarMenuContextual(opciones, evento) {
-  // Asegurar que los estilos estén inyectados
   injectMenuStyles();
 
-  // Eliminar menú anterior y overlay
+  // Eliminar menús anteriores
   const menuExistente = document.querySelector('.dropdown-menu-global');
   const overlayExistente = document.querySelector('.context-overlay');
   if (menuExistente) menuExistente.remove();
   if (overlayExistente) overlayExistente.remove();
 
-  // Crear overlay para capturar clics fuera
+  // Crear overlay
   const overlay = document.createElement('div');
   overlay.className = 'context-overlay';
   document.body.appendChild(overlay);
 
-  // Crear el menú
+  // Crear menú
   const menu = document.createElement('div');
   menu.className = 'dropdown-menu dropdown-menu-global';
 
@@ -132,7 +124,25 @@ function mostrarMenuContextual(opciones, evento) {
 
   document.body.appendChild(menu);
 
-  // Posicionar el menú
+  // ------ MEDICIÓN REAL DEL MENÚ ------
+  // Forzar que sea visible (pero invisible al usuario) para medir dimensiones
+  menu.style.display = 'block';
+  menu.style.visibility = 'hidden';
+  menu.style.opacity = '0';
+  menu.style.pointerEvents = 'none';
+
+  // Obtener dimensiones reales
+  const menuWidth = menu.offsetWidth;
+  const menuHeight = menu.offsetHeight;
+
+  // Restaurar a estado inicial (oculto)
+  menu.style.display = 'none';
+  menu.style.visibility = 'visible';
+  menu.style.opacity = '0';
+  menu.style.pointerEvents = 'none';
+  // ------------------------------------
+
+  // Posicionar
   let left, top;
   if (evento instanceof MouseEvent) {
     left = evento.clientX;
@@ -147,11 +157,13 @@ function mostrarMenuContextual(opciones, evento) {
   }
 
   // Ajustar para que no se salga de la pantalla
-  const menuWidth = 200;
-  const menuHeight = opciones.length * 44 + 12;
-  if (left + menuWidth > window.innerWidth) left = window.innerWidth - menuWidth - 10;
-  if (top + menuHeight > window.innerHeight) top = window.innerHeight - menuHeight - 10;
-  if (left < 10) left = 10;
+  if (left + menuWidth > window.innerWidth) {
+    left = window.innerWidth - menuWidth - 18;
+  }
+  if (top + menuHeight > window.innerHeight) {
+    top = window.innerHeight - menuHeight - 10;
+  }
+  if (left < 18) left = 18;
   if (top < 10) top = 10;
 
   menu.style.left = left + 'px';
@@ -160,6 +172,9 @@ function mostrarMenuContextual(opciones, evento) {
   // Mostrar con animación
   requestAnimationFrame(() => {
     overlay.classList.add('active');
+    menu.style.display = 'block';
+    menu.style.opacity = '1';
+    menu.style.pointerEvents = 'auto';
     menu.classList.add('visible');
   });
 
@@ -174,9 +189,7 @@ function mostrarMenuContextual(opciones, evento) {
   }
 
   // Cerrar al hacer clic en el overlay
-  overlay.addEventListener('click', function(e) {
-    cerrarMenu();
-  });
+  overlay.addEventListener('click', cerrarMenu);
 
   // Almacenar referencias para cerrar desde otros sitios
   menu.cerrar = cerrarMenu;
