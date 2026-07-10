@@ -1,4 +1,23 @@
 <style>
+/* Degradados superior e inferior fijos */
+.scroll-fade-top, .scroll-fade-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 70px;        /* Ajusta según prefieras 50px*/
+  pointer-events: none; /* Para que no interfieran con clics */
+  z-index: 4;           /* Justo debajo del header sticky (z-index:5) */
+}
+.scroll-fade-top {
+  top: 0;
+  background: linear-gradient(to bottom, #f5edd8 50%, transparent);
+  /* background: linear-gradient(to bottom, #f5edd8, transparent); */
+}
+.scroll-fade-bottom {
+  bottom: 0px;         /* Deja espacio para el navbar inferior (ajusta según tu navbar) */
+  background: linear-gradient(to top, #f5edd8 50%, transparent);
+}
+  
   .card {
     background-color: var(--bg-card);
     border: var(--border-width) solid var(--text-dark);
@@ -16,7 +35,7 @@
     justify-content: space-between;
     gap: 12px;
     position: sticky;
-    top: 20px;
+    top: 10px;
     z-index: 5;
     background-color: var(--bg-card); /* Para que no se vea transparente al solaparse */
   }
@@ -139,6 +158,13 @@
   }
   .filter-toggle:active {
     transform: scale(0.95);
+    color: #dda40d;
+  }
+  
+  .filter-toggle.active {
+    /*background: var(--text-dark);
+    color: var(--bg-card);*/
+    color: #dda40d;
   }
 
   .filter-summary-hidden {
@@ -171,6 +197,9 @@
     background: var(--text-dark);
     color: var(--bg-card);
   }
+  
+  
+  
   
   .exercise-item {
     display: flex;
@@ -226,6 +255,10 @@
   }
 </style>
 
+<!-- Degradados de scroll -->
+<div class="scroll-fade-top"></div>
+<div class="scroll-fade-bottom"></div>
+
 <!-- Header -->
 <div class="card profile-card">
   <div class="profile-inner">
@@ -261,6 +294,8 @@
     </div>
   </details>
 </div>
+
+<div class="section-label">Lista ejercicios</div>
 
 <!-- Lista de ejercicios -->
 <div class="card" style="padding-bottom: 8px;">
