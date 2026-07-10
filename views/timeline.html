@@ -1,0 +1,549 @@
+<!-- ===== ESTILOS ESPECÍFICOS DE LIFE BAR (opcionales) ===== -->
+<style>
+  @font-face {
+    font-family: 'Space Mono';
+    src: url('fonts/SpaceMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Space Mono';
+    src: url('fonts/SpaceMono-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: 'Space Mono';
+    src: url('fonts/SpaceMono-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Space Mono';
+    src: url('fonts/SpaceMono-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  /* ===== VARIABLES Y ESTILOS GLOBALES ===== */
+  :root {
+    --bg-main: #f5edd8;
+    --bg-card: #fffbf4;
+    --text-dark: #2b251f;
+    --accent-green: #387a5c;
+    --accent-green-light: #e3f4ec;
+    --accent-orange: #e06d53;
+    --accent-yellow: #e5a93c;
+    --accent-blue: #7da5d9;
+    --accent-shopping: #71b48d;
+    --bar-empty: #eadecc;
+    --border-width: 2.5px;
+    --card-radius: 24px;
+    --shadow-offset: 4px;
+  }
+
+  .card {
+    background-color: var(--bg-card);
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: var(--card-radius);
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 var(--shadow-offset) 0 var(--text-dark);
+    position: relative;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .arrow-icon {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  
+  /* ===== PERFIL (compartido) ===== */
+  .profile-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+  }
+  .profile-inner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+    justify-content: space-between;
+  }
+  .avatar-pixel {
+    width: 46px;
+    height: 46px;
+    background-color: #dfd7c2;
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 0 var(--text-dark);
+    font-size: 24px;
+  }
+  .profile-info {
+    min-width: 0;
+    padding-top: 2px;
+  }
+  .profile-name-small {
+    font-size: 13px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .profile-name-large {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .fecha-hoy {
+    font-size: 13px;
+    margin: 2px 0 0 0;
+    opacity: 0.6;
+    font-weight: 700;
+  }
+  .settings-btn {
+    width: 46px;
+    height: 46px;
+    background-color: #dfd7c2;
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 0 var(--text-dark);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .settings-btn:active {
+    transform: scale(0.95);
+  }
+    
+  /* ===== OTROS ESTILOS COMPARTIDOS (para barras, gráficos, etc.) ===== */
+    .check-in-card { cursor: pointer; }
+    .check-in-card p { margin: 6px 0 0 0; font-size: 14px; opacity: 0.7; }
+    .check-in-header { margin-bottom: 0; }
+    .pixel-bar-spaced { margin-bottom: 16px; }
+
+    .today-phrase {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+    }
+    .today-subtext {
+      font-size: 14px;
+      opacity: 0.7;
+      margin: 0 0 16px 0;
+    }
+
+    .progress-bar-continuous {
+      width: 100%;
+      height: 14px;
+      background-color: var(--bar-empty);
+      border: var(--border-width) solid var(--text-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 55%;
+      background-color: var(--text-dark);
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .score-container {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .score-number {
+      font-size: 64px;
+      font-weight: 700;
+      line-height: 1;
+      margin: 0;
+    }
+    .score-context {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .graph-container {
+      position: relative;
+      height: 40px;
+      border-bottom: 1px dashed rgba(43, 37, 31, 0.3);
+      margin-bottom: 24px;
+    }
+    .graph-line {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    .graph-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: var(--bg-card);
+      border: var(--border-width) solid var(--text-dark);
+      border-radius: 50%;
+      z-index: 2;
+    }
+    .dot-left { left: 0; bottom: 8px; }
+    .dot-right { right: 0; bottom: 14px; }
+
+    .trend-footer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .trend-badge {
+      background-color: var(--accent-green-light);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1.5px solid var(--accent-green);
+    }
+
+    .vitality-score {
+      font-weight: 700;
+      color: var(--accent-orange);
+      font-size: 18px;
+    }
+
+    .pixel-bar {
+      display: flex;
+      gap: 4px;
+      width: 100%;
+    }
+    .bar-block {
+      flex: 1;
+      height: 18px;
+      border-radius: 3px;
+      background-color: var(--bar-empty);
+      border: 1.5px solid transparent;
+    }
+    .bar-block.filled {
+      background-color: var(--accent-orange);
+      border-color: var(--text-dark);
+    }
+    .bar-block.current-limit {
+      border-right: 3px solid var(--text-dark);
+    }
+    .pixel-bar.yellow .bar-block.filled {
+      background-color: var(--accent-yellow);
+    }
+
+    .week-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 380px;
+      margin: 10px 0;
+    }
+    .day-pill {
+      background-color: var(--bg-card);
+      border: var(--border-width) solid var(--text-dark);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 8px;
+      font-size: 13px;
+      min-width: 34px;
+      box-sizing: border-box;
+    }
+    .day-pill span:first-child {
+      font-size: 11px;
+      opacity: 0.5;
+      margin-bottom: 4px;
+    }
+    .day-pill.active {
+      background-color: var(--text-dark);
+      color: var(--bg-card);
+    }
+    .calendar-icon-btn {
+      border: var(--border-width) solid var(--text-dark);
+      background-color: var(--bg-card);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .time-stamp {
+      font-size: 14px;
+      font-weight: 700;
+      width: 50px;
+      text-align: right;
+    }
+    .timeline-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .node-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--text-dark);
+      background-color: var(--accent-blue);
+      z-index: 2;
+    }
+    .node-dot.shopping {
+      background-color: var(--accent-shopping);
+    }
+    .node-line {
+      width: 2px;
+      background-color: var(--text-dark);
+      position: absolute;
+      top: 14px;
+      bottom: -26px;
+      z-index: 1;
+    }
+    .timeline-item:last-child .node-line {
+      display: none;
+    }
+    .event-info {
+      flex: 1;
+    }
+    .event-title {
+      font-weight: 700;
+      font-size: 15px;
+      margin: 0 0 2px 0;
+    }
+    .event-subtitle {
+      font-size: 12px;
+      opacity: 0.7;
+      margin: 0;
+    }
+    
+</style>
+
+<!-- ===== CONTENIDO ===== -->
+<!-- Tarjeta de perfil -->
+<div class="card profile-card">
+  <div class="profile-inner">
+    <div class="avatar-pixel">💀</div>
+    <div class="profile-info">
+      <h3 class="profile-name-small">eli@svb</h3>
+      <h2 class="profile-name-large">Notes Gym</h2>
+      <p class="fecha-hoy"></p>
+    </div>
+    <button class="settings-btn" id="settingsBtnLifebar">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5" stroke-linejoin="miter">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- TODAY -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">☀️ TODAY</div>
+    <div class="arrow-icon">❯</div>
+  </div>
+  <p class="today-phrase">A good night behind you.</p>
+  <p class="today-subtext">8.2h sleep</p>
+  <div class="progress-bar-continuous">
+    <div class="progress-fill"></div>
+  </div>
+  <div class="progress-meta">
+    <span>+15 today</span>
+    <span>LV 10</span>
+  </div>
+</div>
+
+<!-- CHECK IN -->
+<div class="card check-in-card" id="checkInCard">
+  <div class="card-header check-in-header">
+    <div class="card-title">🌤️ CHECK IN</div>
+    <div class="arrow-icon">❯</div>
+  </div>
+  <p>Set an intention, rate your day.</p>
+</div>
+
+<div class="section-label">Where you are</div>
+
+<!-- LIFE SCORE -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Life Score</h3>
+    <div class="arrow-icon">❯</div>
+  </div>
+  <div class="score-container">
+    <h1 class="score-number">73</h1>
+    <span class="score-context">around your normal of 70</span>
+  </div>
+  <div class="graph-container">
+    <svg class="graph-line" viewBox="0 0 100 40" preserveAspectRatio="none">
+      <path d="M 0 30 Q 70 10 100 24" fill="none" stroke="#2b251f" stroke-width="2"/>
+    </svg>
+    <div class="graph-dot dot-left"></div>
+    <div class="graph-dot dot-right"></div>
+  </div>
+  <div class="trend-footer">
+    <span class="trend-badge">↗ up 3</span>
+    <span>over the last 3 weeks</span>
+  </div>
+</div>
+
+<!-- VITALITY -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">🖤 Vitality</div>
+    <div class="vitality-score">75</div>
+  </div>
+  <div class="pixel-bar pixel-bar-spaced">
+    <div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div>
+    <div class="bar-block filled current-limit"></div>
+    <div class="bar-block"></div><div class="bar-block"></div><div class="bar-block"></div>
+  </div>
+  <div class="pixel-bar yellow">
+    <div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div><div class="bar-block filled"></div>
+    <div class="bar-block filled current-limit"></div>
+    <div class="bar-block"></div><div class="bar-block"></div><div class="bar-block"></div><div class="bar-block"></div>
+  </div>
+</div>
+
+<!-- ETIQUETA DE FECHA -->
+<div class="section-label fecha-hoy"></div>
+
+<!-- CALENDARIO SEMANAL -->
+<div class="week-container">
+  <div class="day-pill"><span>M</span><span>22</span></div>
+  <div class="day-pill"><span>T</span><span>23</span></div>
+  <div class="day-pill"><span>W</span><span>24</span></div>
+  <div class="day-pill"><span>T</span><span>25</span></div>
+  <div class="day-pill"><span>F</span><span>26</span></div>
+  <div class="day-pill active"><span>S</span><span>27</span></div>
+  <div class="day-pill"><span>S</span><span>28</span></div>
+  <div class="calendar-icon-btn">🗓️</div>
+</div>
+
+<!-- ===== SCRIPT DE INICIALIZACIÓN ===== -->
+<script>
+  window.initTimeline = function() {
+    console.log('✅ Inicializando Hoy');
+
+    // Actualizar fecha
+    const now = new Date();
+    const dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const fechaStr = `${dias[now.getDay()]}, ${now.getDate()} ${meses[now.getMonth()]}`;
+    document.querySelectorAll('.fecha-hoy').forEach(el => el.textContent = fechaStr);
+
+    // Botón de ajustes
+    const settingsBtn = document.getElementById('settingsBtnLifebar');
+    if (!settingsBtn) {
+      console.error('❌ No se encontró settingsBtnLifebar');
+      return;
+    }
+    settingsBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      console.log('⚙️ Click en settings de Lifebar');
+      const opciones = [
+        { label: '📤 Exportar datos', callback: () => mostrarAlerta('Exportar', 'Exportando datos...') },
+        { label: '📥 Importar datos', callback: () => 
+          mostrarConfirmacion('Actualizar dashboard', '¿Estás seguro?', () => {}, () => {})
+        },
+        { label: '🪐 Barra espacio', callback: () => 
+          mostrarModal({
+            titulo: '¿Qué quieres hacer?',
+            mensaje: 'Elige una opción.',
+            botones: [
+              { texto: '✅ Sí', callback: () => console.log('Sí'), clase: 'primario' },
+              { texto: '❌ No', callback: () => console.log('No'), clase: 'peligro' },
+              { texto: '🤔 Tal vez', callback: () => console.log('Tal vez'), clase: '' }
+            ]
+          })
+        },
+        { label: '🔄 Actualizar', callback: () => 
+          mostrarModal({
+            titulo: 'Guardar documento',
+            mensaje: 'Elige una acción.',
+            botones: [
+              { texto: '💾 Guardar', callback: () => console.log('Guardar'), clase: 'primario' },
+              { texto: '❌ Cancelar', callback: () => console.log('Cancelar'), clase: '' },
+              { texto: '❓ Ayuda', callback: () => console.log('Ayuda'), clase: '' },
+              { texto: '✖ Cerrar', callback: () => console.log('Cerrar'), clase: '' }
+            ]
+          })
+        }
+      ];
+      mostrarMenuContextual(opciones, e);
+    });
+
+    // Check In
+    const checkIn = document.getElementById('checkInCard');
+    if (!checkIn) {
+      console.error('❌ No se encontró checkInCard');
+      return;
+    }
+    checkIn.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      console.log('🔄 Context menu en Check In');
+      const opciones = [
+        { label: '✅ Marcar como completado', callback: () => alert('Check-in completado') },
+        { label: '⏰ Recordatorio', callback: () => alert('Recordatorio configurado') },
+        { label: '📝 Editar nota', callback: () => alert('Editando nota...') }
+      ];
+      mostrarMenuContextual(opciones, e);
+    });
+  };
+</script>

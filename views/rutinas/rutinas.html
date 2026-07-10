@@ -1,0 +1,74 @@
+<style>
+  /* Estilos específicos de Hero (opcional) */
+</style>
+
+<!-- Perfil -->
+<div class="card profile-card">
+  <div class="profile-inner">
+    <div class="avatar-pixel">🦸</div>
+    <div class="profile-info">
+      <h3 class="profile-name-small">eli@svb</h3>
+      <h2 class="profile-name-large">Hero Stats</h2>
+      <p class="fecha-hoy"></p>
+    </div>
+    <button class="settings-btn" id="settingsBtnHero">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2.5" stroke-linejoin="miter">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Misión actual -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">⚔️ Misión actual</div>
+    <div class="arrow-icon">❯</div>
+  </div>
+  <p style="font-size:16px; font-weight:700;">Completar 5 entrenamientos esta semana</p>
+  <div class="progress-bar-continuous">
+    <div class="progress-fill" style="width:40%;"></div>
+  </div>
+  <div class="progress-meta">
+    <span>2 de 5</span>
+    <span>🔥 +40 XP</span>
+  </div>
+</div>
+
+<!-- Logros -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">🏆 Logros</div>
+    <div class="arrow-icon">❯</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0;">
+    <li style="padding:6px 0; border-bottom:1px solid rgba(43,37,31,0.1);">✅ 10 días seguidos</li>
+    <li style="padding:6px 0; border-bottom:1px solid rgba(43,37,31,0.1);">✅ 1000 minutos activos</li>
+    <li style="padding:6px 0;">🔒 50 entrenamientos (45/50)</li>
+  </ul>
+</div>
+
+<script>
+  window.initRutinas = function() {
+    console.log('Inicializando Hero');
+
+    // Actualizar fecha
+    const now = new Date();
+    const dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const fechaStr = `${dias[now.getDay()]}, ${now.getDate()} ${meses[now.getMonth()]}`;
+    document.querySelectorAll('.fecha-hoy').forEach(el => el.textContent = fechaStr);
+
+    // Botón de ajustes (menú contextual específico para Hero)
+    document.getElementById('settingsBtnHero').addEventListener('click', function(e) {
+      e.stopPropagation();
+      const opciones = [
+        { label: '👤 Editar perfil', callback: () => mostrarAlerta('Perfil', 'Editando perfil...') },
+        { label: '🏅 Ver logros', callback: () => mostrarAlerta('Logros', 'Mostrando logros...') },
+        { label: '⚙️ Configuración', callback: () => mostrarAlerta('Configuración', 'Abriendo configuración...') }
+      ];
+      mostrarMenuContextual(opciones, e);
+    });
+  };
+</script>
