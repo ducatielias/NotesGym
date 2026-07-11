@@ -249,69 +249,63 @@
     font-size: 14px;
   }
 
-  /* ===== MODAL DE DETALLE ===== */
-  /* El modal ocupa toda la pantalla */
-  .modal-detalle-ejercicio .modal-box {
+  /* ===== ESTILOS DEL MODAL DE DETALLE ===== */
+  /*.modal-detalle-ejercicio .modal-box {
     width: 100% !important;
     max-width: 100% !important;
     height: 100vh !important;
     max-height: 100vh !important;
     border-radius: 0 !important;
-    padding: 20px 16px 80px 16px; /* Espacio inferior para los botones fijos */
+    padding: 20px 16px 80px 16px; /* Espacio para botones fijos /
     display: flex;
     flex-direction: column;
     overflow: hidden;
     box-shadow: none !important;
     border: none !important;
-  }
+    box-sizing: border-box; /* Crucial para que el padding no rompa el height */
+  }*/
 
-  .detail-wrapper {
+  /* Selector clave: el div intermedio creado por mostrarModal */
+  /*.modal-detalle-ejercicio .modal-box > div {
     display: flex;
     flex-direction: column;
-    height: 100%;
-  }
-
-  .detail-scroll {
     flex: 1;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
+    min-height: 0; /* Evita que el contenedor se estire por el contenido /
+    height: 100%;
+  }*/
+  
+.modal-detalle-ejercicio .modal-overlay {
+  padding: 0 !important;
+}
 
-  /* Estilos para el contenido del detalle */
-  .detail-group {
-    margin-bottom: 12px;
-  }
-  .detail-group strong {
-    display: block;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.5;
-    margin-bottom: 2px;
-  }
-  .detail-group p {
-    margin: 0;
-    font-size: 15px;
-  }
-  .detail-desc {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(43, 37, 31, 0.1);
-  }
-  .detail-desc p {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.6;
-    opacity: 0.85;
-  }
-  .detail-image {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 16px;
-    border: var(--border-width) solid var(--text-dark);
-    margin-bottom: 12px;
-  }
+.modal-detalle-ejercicio .modal-box {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  /* 80px abajo reserva espacio exacto para tus botones fijos */
+  padding: 20px 16px 80px 16px !important; 
+  
+  /* CAMBIO CLAVE: Grid layout perfecto */
+  display: grid !important;
+  grid-template-rows: auto 1fr !important;
+  
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Forzamos al div intermedio generado por mostrarModal a ser un contenedor flexible completo */
+.modal-detalle-ejercicio .modal-box > div {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  height: 100% !important;
+}
 
   /* ===== BOTONES FIJOS CON POSITION: FIXED ===== */
   .detalle-botones-fijos {
@@ -319,7 +313,7 @@
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 21000; /* por encima del modal */
+    z-index: 21000;
     display: flex;
     gap: 10px;
     padding: 0 16px;
@@ -328,7 +322,7 @@
     box-sizing: border-box;
     justify-content: center;
     background: transparent;
-    pointer-events: none; /* para que los clics pasen al fondo, pero los botones capturan */
+    pointer-events: none;
   }
 
   .detalle-botones-fijos .modal-boton {
@@ -360,7 +354,6 @@
     color: var(--bg-card);
   }
 
-  /* En pantallas pequeñas, los botones ocupan todo el ancho y solo iconos */
   @media (max-width: 600px) {
     .detalle-botones-fijos {
       width: 90%;
@@ -580,55 +573,128 @@
   }
 
   // ============================================================
-  //  MODAL DE DETALLE (con botones fijos en la parte inferior)
+  //  MODAL DE DETALLE (carga HTML externo)
   // ============================================================
   let botonesFijosContainer = null;
-
+/*
   function mostrarDetalleEjercicio(ejercicio) {
     const emoji = emojiMap[ejercicio.grupo] || '🏋️';
-    const desc = ejercicio.descripcion || 'Sin descripción.';
-    const imagen = ejercicio.imagen && ejercicio.imagen.trim() !== '' ? ejercicio.imagen : null;
     const video = ejercicio.video && ejercicio.video.trim() !== '' ? ejercicio.video : null;
 
-    // Construimos el contenido del modal (sin botones)
-    let contenidoHTML = `
-      <div class="detail-wrapper">
-        <div class="detail-scroll">
-    `;
+    fetch('views/ejercicios/detalle-ejercicio.html')
+      .then(res => {
+        if (!res.ok) throw new Error('No se pudo cargar el detalle');
+        return res.text();
+      })
+      .then(html => {
+        const modalRef = mostrarModal({
+          titulo: `${emoji} ${ejercicio.nombre}`,
+          contenido: html,
+          botones: []
+        });
 
-    if (imagen) {
-      contenidoHTML += `<img src="${imagen}" alt="${ejercicio.nombre}" class="detail-image" loading="lazy">`;
-    }
+        // Añadir clase para estilos del modal (pantalla completa)
+        setTimeout(() => {
+          const overlay = document.querySelector('.modal-overlay.active');
+          if (overlay) {
+            overlay.classList.add('modal-detalle-ejercicio');
+          }
+        }, 50);
 
-    contenidoHTML += `
-          <div class="detail-group">
-            <strong>Grupo muscular</strong>
-            <p>${ejercicio.grupo}</p>
-          </div>
-          <div class="detail-desc">
-            <strong>Descripción</strong>
-            <p>${desc}</p>
-          </div>
-        </div>
-      </div>
-    `;
+        // Rellenar datos y crear botones fijos
+        setTimeout(() => {
+          // Imagen
+          const imgContainer = document.getElementById('detalleImagenContainer');
+          if (imgContainer) {
+            const imagen = ejercicio.imagen && ejercicio.imagen.trim() !== '' ? ejercicio.imagen : null;
+            imgContainer.innerHTML = imagen ? `<img src="${imagen}" alt="${ejercicio.nombre}" class="detalle-imagen" loading="lazy">` : '';
+          }
 
-    // Abrir el modal
-    const modalRef = mostrarModal({
-      titulo: `${emoji} ${ejercicio.nombre}`,
-      contenido: contenidoHTML,
-      botones: [] // sin botones automáticos
+          const grupoEl = document.getElementById('detalleGrupo');
+          if (grupoEl) grupoEl.textContent = ejercicio.grupo;
+
+          const descEl = document.getElementById('detalleDescripcion');
+          if (descEl) descEl.textContent = ejercicio.descripcion || 'Sin descripción.';
+
+          // Crear botones fijos
+          crearBotonesFijos(modalRef, ejercicio, video);
+        }, 100);
+      })
+      .catch(err => {
+        console.error(err);
+        mostrarAlerta('Error', 'No se pudo cargar el detalle del ejercicio.');
+      });
+  }
+*/
+  function mostrarDetalleEjercicio(ejercicio) {
+  const emoji = emojiMap[ejercicio.grupo] || '🏋️';
+  const video = ejercicio.video && ejercicio.video.trim() !== '' ? ejercicio.video : null;
+
+  fetch('views/ejercicios/detalle-ejercicio.html')
+    .then(res => {
+      if (!res.ok) throw new Error('No se pudo cargar el detalle');
+      return res.text();
+    })
+    .then(html => {
+      const modalRef = mostrarModal({
+        titulo: `${emoji} ${ejercicio.nombre}`,
+        contenido: html,
+        botones: []
+      });
+
+      // Añadir clase para estilos del modal (pantalla completa)
+      setTimeout(() => {
+        const overlay = document.querySelector('.modal-overlay.active');
+        if (overlay) {
+          overlay.classList.add('modal-detalle-ejercicio');
+        }
+      }, 50);
+
+      // Rellenar datos y crear botones fijos
+      setTimeout(() => {
+        
+        // ─── NUEVO: AJUSTE DEL CONTENEDOR INTERMEDIO GENERADO POR JS ───
+        const modalBox = document.querySelector('.modal-detalle-ejercicio .modal-box');
+        if (modalBox) {
+          // Buscamos el primer div hijo directo de modal-box (el contenedor intermedio)
+          const contentWrapper = modalBox.querySelector(':scope > div');
+          if (contentWrapper) {
+            contentWrapper.style.display = 'flex';
+            contentWrapper.style.flexDirection = 'column';
+            contentWrapper.style.minHeight = '0';
+            contentWrapper.style.height = '100%';
+            contentWrapper.style.overflow = 'hidden';
+            contentWrapper.style.flex = '1';
+          }
+        }
+        // ──────────────────────────────────────────────────────────────
+
+        // Imagen
+        const imgContainer = document.getElementById('detalleImagenContainer');
+        if (imgContainer) {
+          const imagen = ejercicio.imagen && ejercicio.imagen.trim() !== '' ? ejercicio.imagen : null;
+          imgContainer.innerHTML = imagen ? `<img src="${imagen}" alt="${ejercicio.nombre}" class="detalle-imagen" loading="lazy">` : '';
+        }
+
+        const grupoEl = document.getElementById('detalleGrupo');
+        if (grupoEl) grupoEl.textContent = ejercicio.grupo;
+
+        const descEl = document.getElementById('detalleDescripcion');
+        if (descEl) descEl.textContent = ejercicio.descripcion || 'Sin descripción.';
+
+        // Crear botones fijos
+        crearBotonesFijos(modalRef, ejercicio, video);
+      }, 100);
+    })
+    .catch(err => {
+      console.error(err);
+      mostrarAlerta('Error', 'No se pudo cargar el detalle del ejercicio.');
     });
+}
+  
+  function crearBotonesFijos(modalRef, ejercicio, video) {
+    eliminarBotonesFijos();
 
-    // Añadir clase personalizada para estilos
-    setTimeout(() => {
-      const overlay = document.querySelector('.modal-overlay.active');
-      if (overlay) {
-        overlay.classList.add('modal-detalle-ejercicio');
-      }
-    }, 50);
-
-    // Crear contenedor de botones fijos
     const container = document.createElement('div');
     container.className = 'detalle-botones-fijos';
     container.id = 'detalleBotonesFijos';
@@ -674,7 +740,6 @@
     document.body.appendChild(container);
     botonesFijosContainer = container;
 
-    // Cuando se cierre el modal por otros medios (ESC, overlay), eliminar los botones fijos
     const originalCerrar = modalRef.cerrar;
     modalRef.cerrar = function() {
       originalCerrar();
@@ -857,6 +922,19 @@
   // ============================================================
   window.initEjercicios = function() {
     console.log('Inicializando Ejercicios');
+    
+    // ─── DESBLOQUEO TOTAL Y ELIMINACIÓN DE MODALES RESIDUALES ───
+  // 1. Forzar al body a recuperar el scroll normal
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = '';
+  document.body.classList.remove('modal-open'); 
+
+  // 2. Buscar y destruir cualquier overlay de modal activo que se haya quedado huérfano en el DOM
+  const overlaysResiduales = document.querySelectorAll('.modal-overlay');
+  overlaysResiduales.forEach(overlay => {
+    overlay.remove();
+  });
+    
     renderizarLista();
     actualizarFiltros();
 
@@ -933,4 +1011,6 @@
       }
     });
   };
+
+
 </script>
