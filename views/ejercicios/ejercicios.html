@@ -5,7 +5,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    height: 70px;
+    height: 100px;
     pointer-events: none;
     z-index: 4;
   }
@@ -34,11 +34,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 12px;/*gap: 12px;*/
     position: sticky;
     top: 10px;
     z-index: 5;
     background-color: var(--bg-card);
+    
+    padding: 4px;border-radius: 18px;
   }
   .profile-inner {
     display: flex;
@@ -47,19 +49,23 @@
     min-width: 0;
     flex: 1;
     justify-content: space-between;
+    
+    
   }
   .avatar-pixel {
     width: 46px;
     height: 46px;
-    background-color: #dfd7c2;
-    border: var(--border-width) solid var(--text-dark);
-    border-radius: 14px;
+    /*background-color: #dfd7c2;*/
+    /*border: var(--border-width) solid var(--text-dark);*/
+    /*border-radius: 14px;*/
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    box-shadow: 0 3px 0 var(--text-dark);
+    /*box-shadow: 0 3px 0 var(--text-dark);*/
     font-size: 24px;
+    
+    margin-left: 10px;
   }
   .profile-info {
     min-width: 0;
@@ -85,7 +91,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    box-shadow: 0 3px 0 var(--text-dark);
+    box-shadow: 0 1px 0 var(--text-dark);/*box-shadow: 0 3px 0 var(--text-dark);*/
     cursor: pointer;
     transition: transform 0.1s ease;
   }
@@ -285,7 +291,11 @@
 <!-- Header -->
 <div class="card profile-card">
   <div class="profile-inner">
-    <div class="avatar-pixel">🏋️</div>
+    <div class="avatar-pixel">
+    <svg viewBox="0 0 640 640">
+        <path d="M96 176C96 149.5 117.5 128 144 128C170.5 128 192 149.5 192 176L192 288L448 288L448 176C448 149.5 469.5 128 496 128C522.5 128 544 149.5 544 176L544 192L560 192C586.5 192 608 213.5 608 240L608 288C625.7 288 640 302.3 640 320C640 337.7 625.7 352 608 352L608 400C608 426.5 586.5 448 560 448L544 448L544 464C544 490.5 522.5 512 496 512C469.5 512 448 490.5 448 464L448 352L192 352L192 464C192 490.5 170.5 512 144 512C117.5 512 96 490.5 96 464L96 448L80 448C53.5 448 32 426.5 32 400L32 352C14.3 352 0 337.7 0 320C0 302.3 14.3 288 32 288L32 240C32 213.5 53.5 192 80 192L96 192L96 176z" fill="currentColor" />
+      </svg>
+    </div>
     <div class="profile-info">
       <h2 class="profile-name-large">Ejercicios</h2>
     </div>
