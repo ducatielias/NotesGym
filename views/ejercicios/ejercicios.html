@@ -34,13 +34,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;/*gap: 12px;*/
+    gap: 12px;
     position: sticky;
     top: 10px;
     z-index: 5;
     background-color: var(--bg-card);
-    
-    padding: 4px;border-radius: 18px;
+    padding: 4px;
+    border-radius: 18px;
   }
   .profile-inner {
     display: flex;
@@ -49,22 +49,15 @@
     min-width: 0;
     flex: 1;
     justify-content: space-between;
-    
-    
   }
   .avatar-pixel {
     width: 46px;
     height: 46px;
-    /*background-color: #dfd7c2;*/
-    /*border: var(--border-width) solid var(--text-dark);*/
-    /*border-radius: 14px;*/
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    /*box-shadow: 0 3px 0 var(--text-dark);*/
     font-size: 24px;
-    
     margin-left: 10px;
   }
   .profile-info {
@@ -91,7 +84,7 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    box-shadow: 0 1px 0 var(--text-dark);/*box-shadow: 0 3px 0 var(--text-dark);*/
+    box-shadow: 0 1px 0 var(--text-dark);
     cursor: pointer;
     transition: transform 0.1s ease;
   }
@@ -200,12 +193,11 @@
     color: var(--bg-card);
   }
 
-  /* ===== TARJETAS DE EJERCICIOS (ahora usan .card) ===== */
+  /* ===== TARJETAS DE EJERCICIOS ===== */
   .exercise-item {
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     margin-bottom: 8px;
-    /* padding, borde, sombra, fondo ya los hereda de .card */
     display: flex;
     align-items: center;
     gap: 12px;
@@ -221,6 +213,15 @@
     font-size: 32px;
     width: 48px;
     text-align: center;
+    flex-shrink: 0;
+  }
+  .exercise-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: var(--border-width) solid var(--text-dark);
+    background-color: var(--bg-card);
     flex-shrink: 0;
   }
   .exercise-info {
@@ -248,7 +249,35 @@
     font-size: 14px;
   }
 
-  /* Estilos para el contenido del modal de detalle */
+  /* ===== MODAL DE DETALLE ===== */
+  /* El modal ocupa toda la pantalla */
+  .modal-detalle-ejercicio .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    padding: 20px 16px 80px 16px; /* Espacio inferior para los botones fijos */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .detail-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .detail-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  /* Estilos para el contenido del detalle */
   .detail-group {
     margin-bottom: 12px;
   }
@@ -275,8 +304,80 @@
     line-height: 1.6;
     opacity: 0.85;
   }
+  .detail-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: var(--border-width) solid var(--text-dark);
+    margin-bottom: 12px;
+  }
 
-  /* Asegurar que #exerciseList ocupe todo el ancho y no tenga padding extra */
+  /* ===== BOTONES FIJOS CON POSITION: FIXED ===== */
+  .detalle-botones-fijos {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 21000; /* por encima del modal */
+    display: flex;
+    gap: 10px;
+    padding: 0 16px;
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    background: transparent;
+    pointer-events: none; /* para que los clics pasen al fondo, pero los botones capturan */
+  }
+
+  .detalle-botones-fijos .modal-boton {
+    pointer-events: auto;
+    flex: 0 1 auto;
+    padding: 10px 18px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--bg-card);
+    border: var(--border-width) solid var(--text-dark);
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--text-dark);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    color: var(--text-dark);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .detalle-botones-fijos .modal-boton:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 0 var(--text-dark);
+  }
+
+  .detalle-botones-fijos .modal-boton.primario {
+    background-color: var(--text-dark);
+    color: var(--bg-card);
+  }
+
+  /* En pantallas pequeñas, los botones ocupan todo el ancho y solo iconos */
+  @media (max-width: 600px) {
+    .detalle-botones-fijos {
+      width: 90%;
+      gap: 8px;
+    }
+    .detalle-botones-fijos .modal-boton {
+      flex: 1;
+      justify-content: center;
+      padding: 14px 8px;
+      font-size: 20px;
+    }
+    .detalle-botones-fijos .btn-text {
+      display: none;
+    }
+  }
+
+  /* Asegurar que #exerciseList ocupe todo el ancho */
   #exerciseList {
     width: 100%;
     padding: 0;
@@ -292,7 +393,7 @@
 <div class="card profile-card">
   <div class="profile-inner">
     <div class="avatar-pixel">
-    <svg viewBox="0 0 640 640">
+      <svg viewBox="0 0 640 640">
         <path d="M96 176C96 149.5 117.5 128 144 128C170.5 128 192 149.5 192 176L192 288L448 288L448 176C448 149.5 469.5 128 496 128C522.5 128 544 149.5 544 176L544 192L560 192C586.5 192 608 213.5 608 240L608 288C625.7 288 640 302.3 640 320C640 337.7 625.7 352 608 352L608 400C608 426.5 586.5 448 560 448L544 448L544 464C544 490.5 522.5 512 496 512C469.5 512 448 490.5 448 464L448 352L192 352L192 464C192 490.5 170.5 512 144 512C117.5 512 96 490.5 96 464L96 448L80 448C53.5 448 32 426.5 32 400L32 352C14.3 352 0 337.7 0 320C0 302.3 14.3 288 32 288L32 240C32 213.5 53.5 192 80 192L96 192L96 176z" fill="currentColor" />
       </svg>
     </div>
@@ -334,44 +435,63 @@
 
 <script>
   // ============================================================
+  //  FUNCIÓN PARA EXTRAER MINIATURA DE YOUTUBE
+  // ============================================================
+  function getYouTubeThumbnail(url) {
+    if (!url) return null;
+    const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&?\/]+)/;
+    const match = url.match(regex);
+    if (match) {
+      return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+    }
+    return null;
+  }
+
+  // ============================================================
   //  DATOS
   // ============================================================
   let ejercicios = [{
     id: 1,
     nombre: "Press de banca",
     grupo: "Pecho",
-    nivel: "Intermedio",
-    descripcion: "Ejercicio básico para desarrollar pectorales. Acostado en banco plano, levanta la barra con agarre ligeramente más ancho que los hombros. Baja controladamente hasta tocar el pecho y empuja hacia arriba."
+    descripcion: "Ejercicio básico para desarrollar pectorales. Acostado en banco plano, levanta la barra con agarre ligeramente más ancho que los hombros. Baja controladamente hasta tocar el pecho y empuja hacia arriba.",
+    video: "",
+    imagen: ""
   }, {
     id: 2,
     nombre: "Sentadilla",
     grupo: "Pierna",
-    nivel: "Avanzado",
-    descripcion: "Movimiento fundamental para pierna y glúteo. Coloca la barra sobre los trapecios, baja hasta que los muslos queden paralelos al suelo, manteniendo la espalda recta y el pecho erguido."
+    descripcion: "Movimiento fundamental para pierna y glúteo. Coloca la barra sobre los trapecios, baja hasta que los muslos queden paralelos al suelo, manteniendo la espalda recta y el pecho erguido.",
+    video: "",
+    imagen: ""
   }, {
     id: 3,
     nombre: "Remo con barra",
     grupo: "Espalda",
-    nivel: "Intermedio",
-    descripcion: "Ejercicio para la espalda media y dorsal ancho. Inclínate hacia adelante con la barra, tira de ella hacia el abdomen manteniendo los codos pegados al cuerpo."
+    descripcion: "Ejercicio para la espalda media y dorsal ancho. Inclínate hacia adelante con la barra, tira de ella hacia el abdomen manteniendo los codos pegados al cuerpo.",
+    video: "",
+    imagen: ""
   }, {
     id: 4,
     nombre: "Curl de bíceps",
     grupo: "Brazos",
-    nivel: "Principiante",
-    descripcion: "Aísla el bíceps. De pie o sentado, con las pesas a los lados, flexiona los codos llevando las pesas hacia los hombros, controlando el descenso."
+    descripcion: "Aísla el bíceps. De pie o sentado, con las pesas a los lados, flexiona los codos llevando las pesas hacia los hombros, controlando el descenso.",
+    video: "",
+    imagen: ""
   }, {
     id: 5,
     nombre: "Fondos en paralelas",
     grupo: "Pecho",
-    nivel: "Avanzado",
-    descripcion: "Ejercicio de empuje para pectoral inferior y tríceps. En paralelas, baja el cuerpo hasta que los hombros estén por debajo de los codos, luego empuja hacia arriba."
+    descripcion: "Ejercicio de empuje para pectoral inferior y tríceps. En paralelas, baja el cuerpo hasta que los hombros estén por debajo de los codos, luego empuja hacia arriba.",
+    video: "",
+    imagen: ""
   }, {
     id: 6,
     nombre: "Peso muerto",
     grupo: "Pierna",
-    nivel: "Avanzado",
-    descripcion: "Levantamiento de barra desde el suelo. Con pies separados al ancho de caderas, agarra la barra, mantén la espalda recta y levanta extendiendo caderas y rodillas."
+    descripcion: "Levantamiento de barra desde el suelo. Con pies separados al ancho de caderas, agarra la barra, mantén la espalda recta y levanta extendiendo caderas y rodillas.",
+    video: "",
+    imagen: ""
   }];
 
   // Cargar desde localStorage
@@ -379,7 +499,13 @@
   if (stored) {
     try {
       const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length) ejercicios = parsed;
+      if (Array.isArray(parsed) && parsed.length) {
+        ejercicios = parsed.map(e => ({
+          ...e,
+          video: e.video || '',
+          imagen: e.imagen || ''
+        }));
+      }
     } catch (e) {}
   }
 
@@ -426,12 +552,17 @@
     let html = '';
     filtrados.forEach(ej => {
       const emoji = emojiMap[ej.grupo] || '🏋️';
+      const imagen = ej.imagen && ej.imagen.trim() !== '' ? ej.imagen : null;
+      const imagenHtml = imagen 
+        ? `<img src="${imagen}" alt="${ej.nombre}" class="exercise-img" loading="lazy">`
+        : `<div class="exercise-emoji">${emoji}</div>`;
+
       html += `
         <div class="card exercise-item" data-id="${ej.id}">
-          <div class="exercise-emoji">${emoji}</div>
+          ${imagenHtml}
           <div class="exercise-info">
             <div class="exercise-name">${ej.nombre}</div>
-            <div class="exercise-meta">${ej.grupo} · ${ej.nivel}</div>
+            <div class="exercise-meta">${ej.grupo}</div>
           </div>
         </div>
       `;
@@ -449,42 +580,112 @@
   }
 
   // ============================================================
-  //  MODAL DE DETALLE
+  //  MODAL DE DETALLE (con botones fijos en la parte inferior)
   // ============================================================
+  let botonesFijosContainer = null;
+
   function mostrarDetalleEjercicio(ejercicio) {
     const emoji = emojiMap[ejercicio.grupo] || '🏋️';
     const desc = ejercicio.descripcion || 'Sin descripción.';
+    const imagen = ejercicio.imagen && ejercicio.imagen.trim() !== '' ? ejercicio.imagen : null;
+    const video = ejercicio.video && ejercicio.video.trim() !== '' ? ejercicio.video : null;
 
-    const contenido = `
-      <div class="detail-group">
-        <strong>Grupo muscular</strong>
-        <p>${ejercicio.grupo}</p>
-      </div>
-      <div class="detail-group">
-        <strong>Nivel</strong>
-        <p>${ejercicio.nivel}</p>
-      </div>
-      <div class="detail-desc">
-        <strong>Descripción</strong>
-        <p>${desc}</p>
-      </div>
-      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-        <button class="modal-boton primario" id="btnEditarDesdeDetalle">✏️ Editar</button>
+    // Construimos el contenido del modal (sin botones)
+    let contenidoHTML = `
+      <div class="detail-wrapper">
+        <div class="detail-scroll">
+    `;
+
+    if (imagen) {
+      contenidoHTML += `<img src="${imagen}" alt="${ejercicio.nombre}" class="detail-image" loading="lazy">`;
+    }
+
+    contenidoHTML += `
+          <div class="detail-group">
+            <strong>Grupo muscular</strong>
+            <p>${ejercicio.grupo}</p>
+          </div>
+          <div class="detail-desc">
+            <strong>Descripción</strong>
+            <p>${desc}</p>
+          </div>
+        </div>
       </div>
     `;
 
+    // Abrir el modal
     const modalRef = mostrarModal({
       titulo: `${emoji} ${ejercicio.nombre}`,
-      contenido: contenido,
+      contenido: contenidoHTML,
       botones: [] // sin botones automáticos
     });
 
-    const btnEditar = document.getElementById('btnEditarDesdeDetalle');
-    if (btnEditar) {
-      btnEditar.addEventListener('click', function() {
-        modalRef.cerrar();
-        setTimeout(() => abrirFormularioEdicion(ejercicio), 200);
+    // Añadir clase personalizada para estilos
+    setTimeout(() => {
+      const overlay = document.querySelector('.modal-overlay.active');
+      if (overlay) {
+        overlay.classList.add('modal-detalle-ejercicio');
+      }
+    }, 50);
+
+    // Crear contenedor de botones fijos
+    const container = document.createElement('div');
+    container.className = 'detalle-botones-fijos';
+    container.id = 'detalleBotonesFijos';
+
+    // Botón Cerrar
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-boton';
+    closeBtn.title = 'Cerrar';
+    closeBtn.innerHTML = `✖ <span class="btn-text">Cerrar</span>`;
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      modalRef.cerrar();
+      eliminarBotonesFijos();
+    });
+    container.appendChild(closeBtn);
+
+    // Botón Reproducir (si hay video)
+    if (video) {
+      const playBtn = document.createElement('button');
+      playBtn.className = 'modal-boton primario';
+      playBtn.title = 'Reproducir vídeo';
+      playBtn.innerHTML = `▶ <span class="btn-text">Reproducir</span>`;
+      playBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.open(video, '_blank');
       });
+      container.appendChild(playBtn);
+    }
+
+    // Botón Editar
+    const editBtn = document.createElement('button');
+    editBtn.className = 'modal-boton primario';
+    editBtn.title = 'Editar ejercicio';
+    editBtn.innerHTML = `✏️ <span class="btn-text">Editar</span>`;
+    editBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      modalRef.cerrar();
+      eliminarBotonesFijos();
+      setTimeout(() => abrirFormularioEdicion(ejercicio), 200);
+    });
+    container.appendChild(editBtn);
+
+    document.body.appendChild(container);
+    botonesFijosContainer = container;
+
+    // Cuando se cierre el modal por otros medios (ESC, overlay), eliminar los botones fijos
+    const originalCerrar = modalRef.cerrar;
+    modalRef.cerrar = function() {
+      originalCerrar();
+      eliminarBotonesFijos();
+    };
+  }
+
+  function eliminarBotonesFijos() {
+    if (botonesFijosContainer) {
+      botonesFijosContainer.remove();
+      botonesFijosContainer = null;
     }
   }
 
@@ -498,14 +699,12 @@
         return res.text();
       })
       .then(html => {
-        // Mostrar modal con el formulario
         mostrarModal({
           titulo: ejercicio ? '✏️ Editar ejercicio' : '➕ Nuevo ejercicio',
           contenido: html,
           botones: []
         });
 
-        // Esperar a que el DOM del modal esté listo y rellenar campos
         requestAnimationFrame(() => {
           const form = document.getElementById('ejercicioForm');
           if (!form) {
@@ -515,23 +714,23 @@
 
           const nombreInput = document.getElementById('nombreEjercicio');
           const grupoSelect = document.getElementById('grupoEjercicio');
-          const nivelSelect = document.getElementById('nivelEjercicio');
           const descTextarea = document.getElementById('descripcionEjercicio');
           const idInput = document.getElementById('idEjercicio');
+          const videoInput = document.getElementById('videoEjercicio');
+          const imagenInput = document.getElementById('imagenEjercicio');
           const deleteContainer = document.getElementById('deleteButtonContainer');
           const btnEliminar = document.getElementById('btnEliminarEjercicio');
           const cancelBtn = document.getElementById('formCancelar');
 
-          // Si es edición, rellenar campos
           if (ejercicio && ejercicio.id) {
             if (nombreInput) nombreInput.value = ejercicio.nombre;
             if (grupoSelect) grupoSelect.value = ejercicio.grupo;
-            if (nivelSelect) nivelSelect.value = ejercicio.nivel;
             if (descTextarea) descTextarea.value = ejercicio.descripcion || '';
             if (idInput) idInput.value = ejercicio.id;
+            if (videoInput) videoInput.value = ejercicio.video || '';
+            if (imagenInput) imagenInput.value = ejercicio.imagen || '';
             if (deleteContainer) deleteContainer.style.display = 'block';
 
-            // Evento eliminar
             if (btnEliminar) {
               btnEliminar.onclick = null;
               btnEliminar.addEventListener('click', function() {
@@ -543,7 +742,6 @@
                     guardarEjercicios();
                     actualizarFiltros();
                     renderizarLista();
-                    // Cerrar modales
                     const overlay = document.querySelector('.modal-overlay');
                     if (overlay) {
                       overlay.classList.remove('active');
@@ -558,17 +756,30 @@
             if (idInput) idInput.value = '';
             if (nombreInput) nombreInput.value = '';
             if (grupoSelect) grupoSelect.value = 'Pecho';
-            if (nivelSelect) nivelSelect.value = 'Principiante';
             if (descTextarea) descTextarea.value = '';
+            if (videoInput) videoInput.value = '';
+            if (imagenInput) imagenInput.value = '';
           }
 
-          // Evento submit del formulario
+          // Autocompletado de imagen desde video
+          if (videoInput && imagenInput) {
+            videoInput.removeEventListener('input', autocompleteImagen);
+            videoInput.addEventListener('input', autocompleteImagen);
+            function autocompleteImagen() {
+              if (!imagenInput.value) {
+                const thumb = getYouTubeThumbnail(this.value);
+                if (thumb) imagenInput.value = thumb;
+              }
+            }
+          }
+
           form.onsubmit = function(e) {
             e.preventDefault();
             const nombre = document.getElementById('nombreEjercicio').value.trim();
             const grupo = document.getElementById('grupoEjercicio').value;
-            const nivel = document.getElementById('nivelEjercicio').value;
             const descripcion = document.getElementById('descripcionEjercicio').value.trim();
+            const video = document.getElementById('videoEjercicio').value.trim();
+            const imagen = document.getElementById('imagenEjercicio').value.trim();
             const id = document.getElementById('idEjercicio').value;
 
             if (!nombre) {
@@ -576,7 +787,7 @@
               return;
             }
 
-            const datos = { nombre, grupo, nivel, descripcion };
+            const datos = { nombre, grupo, descripcion, video, imagen };
             if (id) {
               datos.id = parseInt(id);
               const index = ejercicios.findIndex(e => e.id === datos.id);
@@ -679,7 +890,7 @@
       }
     });
 
-    // ===== Botón de ajustes (cambia icono al hacer scroll) =====
+    // Botón de ajustes
     const settingsBtn = document.getElementById('settingsBtnLifebar');
     let isAtTop = true;
 

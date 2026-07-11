@@ -20,13 +20,16 @@
     </select>
   </div>
 
+  <!-- NUEVOS CAMPOS: video e imagen -->
   <div>
-    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Nivel</label>
-    <select id="nivelEjercicio" class="search-input" style="width:100%;">
-      <option value="Principiante">Principiante</option>
-      <option value="Intermedio">Intermedio</option>
-      <option value="Avanzado">Avanzado</option>
-    </select>
+    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">URL de video (YouTube)</label>
+    <input type="url" id="videoEjercicio" class="search-input" style="width:100%;" placeholder="https://www.youtube.com/watch?v=...">
+  </div>
+
+  <div>
+    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">URL de imagen (opcional)</label>
+    <input type="url" id="imagenEjercicio" class="search-input" style="width:100%;" placeholder="https://ejemplo.com/imagen.jpg">
+    <div style="font-size:12px; opacity:0.6; margin-top:4px;">Si se deja vacío, se usará el emoji del grupo.</div>
   </div>
 
   <div>
