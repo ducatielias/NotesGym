@@ -386,6 +386,41 @@
     'Cardio': '🏃',
     'Otro': '🎯'
   };
+  
+  const iconMap = {
+    'Pecho': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 4h12M6 8h12M12 4v16M9 20h6M3 12h18"/>
+              </svg>`, // Representación de barra con discos (Powerlifting)
+
+    'Espalda': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/>
+                </svg>`, // Icono Heráldico / Alas / Estandarte RPG
+
+    'Pierna': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                 <path d="M6 3v6a6 6 0 0 0 6 6h0a6 6 0 0 0 6-6V3M12 15v6M9 21h6"/>
+               </svg>`, // Botas pesadas / Armadura de piernas estructural
+
+    'Brazos': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                 <path d="M18 15h-2a4 4 0 0 0-4 4v2M14 3h6v6M14 7h4M3 21h4V11H3zM7 15h7a3 3 0 0 0 3-3V7"/>
+               </svg>`, // Brazo en flexión con líneas angulares (Bíceps rígido)
+
+    'Hombros': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 3h14M12 3v14M6 17h12M3 10h18"/>
+                </svg>`, // Variación de press militar / hombreras de armadura
+
+    'Abdomen': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+                  <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
+                </svg>`, // Rejilla geométrica limpia (Core/Abs definidos)
+
+    'Cardio': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+               </svg>`, // Pulso/Electrocardiograma de resistencia RPG
+
+    'Otro': `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+             </svg>` // Diana / Objetivo RPG (Reemplazo del target)
+  };
 
   // ===== FUNCIÓN PARA NORMALIZAR (quitar acentos) =====
   function normalizarTexto(texto) {
@@ -422,7 +457,7 @@
 
     let html = '';
     filtrados.forEach(ej => {
-      const emoji = emojiMap[ej.grupo] || '🏋️';
+      const emoji = iconMap[ej.grupo] || '🏋️';/*const emoji = emojiMap[ej.grupo] || '🏋️';*/
       const imagen = ej.imagen && ej.imagen.trim() !== '' ? ej.imagen : null;
       const imagenHtml = imagen 
         ? `<img src="${imagen}" alt="${ej.nombre}" class="exercise-img" loading="lazy">`
@@ -489,7 +524,7 @@
       })
       .then(html => {
         const modalRef = mostrarModal({
-          titulo: `${emojiMap[ejercicio.grupo] || '🏋️'} ${ejercicio.nombre}`,
+          titulo: `${iconMap[ejercicio.grupo] || defaultIcon} ${ejercicio.nombre}`,/*titulo: `${emojiMap[ejercicio.grupo] || '🏋️'} ${ejercicio.nombre}`,*/
           contenido: html,
           botones: []
         });

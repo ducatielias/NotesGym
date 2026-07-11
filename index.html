@@ -298,7 +298,7 @@
               } else {
                 // Ejecutar inline con eval en el ámbito global
                 try {
-                  Function(script.textContent)();
+                  Function(script.textContent)();/*Function(script.textContent)();*/
                 } catch (e) {
                   console.error('Error ejecutando script de vista:', e);
                 }
