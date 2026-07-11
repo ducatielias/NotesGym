@@ -387,6 +387,11 @@
     'Otro': '🎯'
   };
 
+  // ===== FUNCIÓN PARA NORMALIZAR (quitar acentos) =====
+  function normalizarTexto(texto) {
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
   // ===== Funciones globales =====
   window.ejercicios = ejercicios;
 
@@ -397,13 +402,17 @@
   function renderizarLista() {
     const container = document.getElementById('exerciseList');
     const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const searchNormalizado = normalizarTexto(searchTerm);
 
     let filtrados = ejercicios;
     if (filtroGrupo) {
       filtrados = filtrados.filter(e => e.grupo === filtroGrupo);
     }
     if (searchTerm) {
-      filtrados = filtrados.filter(e => e.nombre.toLowerCase().includes(searchTerm));
+      filtrados = filtrados.filter(e => {
+        const nombreNormalizado = normalizarTexto(e.nombre.toLowerCase());
+        return nombreNormalizado.includes(searchNormalizado);
+      });
     }
 
     if (filtrados.length === 0) {

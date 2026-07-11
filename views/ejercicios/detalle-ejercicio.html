@@ -62,6 +62,11 @@
     white-space: pre-wrap;
     word-wrap: break-word;
   }
+  .detalle-descripcion-wrapper p a {
+    color: var(--accent-blue);
+    text-decoration: underline;
+    word-break: break-all;
+  }
   .detalle-descripcion-wrapper::-webkit-scrollbar {
     width: 4px;
   }
@@ -183,6 +188,19 @@
 
 <script>
   // ============================================================
+  //  FUNCIÓN PARA CONVERTIR URLs EN ENLACES
+  // ============================================================
+  function convertirUrlsEnEnlaces(texto) {
+    // Expresión regular para detectar URLs (http, https, ftp, etc.)
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return texto.replace(urlRegex, function(url) {
+      // Escapar caracteres especiales para evitar XSS (opcional pero seguro)
+      const urlEscapada = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+      return `<a href="${urlEscapada}" target="_blank" rel="noopener noreferrer">${urlEscapada}</a>`;
+    });
+  }
+
+  // ============================================================
   //  INICIALIZADOR DEL DETALLE
   // ============================================================
   window.initDetalle = function(ejercicio, modalRef) {
@@ -196,7 +214,12 @@
     }
 
     document.getElementById('detalleGrupo').textContent = ejercicio.grupo;
-    document.getElementById('detalleDescripcion').textContent = ejercicio.descripcion || 'Sin descripción.';
+
+    // Procesar descripción: convertir URLs en enlaces
+    const descripcionElement = document.getElementById('detalleDescripcion');
+    let descripcionTexto = ejercicio.descripcion || 'Sin descripción.';
+    // Aplicar conversión
+    descripcionElement.innerHTML = convertirUrlsEnEnlaces(descripcionTexto);
 
     // ===== Botones fijos =====
     const container = document.createElement('div');
