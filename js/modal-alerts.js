@@ -182,7 +182,7 @@ function mostrarModal(opciones) {
   if (titulo) {
     const h2 = document.createElement('h2');
     h2.className = 'modal-titulo';
-    h2.textContent = titulo;
+    h2.innerHTML  = titulo;
     box.appendChild(h2);
   }
 

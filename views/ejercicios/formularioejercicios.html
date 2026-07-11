@@ -1,14 +1,60 @@
-<form id="ejercicioForm" style="display: flex; flex-direction: column; gap: 12px;">
+<style>
+  /* ===== ESTILOS DEL FORMULARIO ===== */
+  #ejercicioForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  #ejercicioForm label {
+    font-weight: 700;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  #ejercicioForm .search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(43, 37, 31, 0.2);
+    background: #ffffff00;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    box-sizing: border-box;
+    box-shadow: 0 0px 0 var(--text-dark);
+    outline: none;
+    border-radius: 8px;
+  }
+  #ejercicioForm .search-input:focus {
+    box-shadow: 0 3px 0 var(--accent-orange);
+    border-color: var(--accent-orange);
+  }
+  #ejercicioForm textarea.search-input {
+    height: 80px;
+    resize: vertical;
+  }
+  #ejercicioForm .modal-boton.peligro {
+    background-color: #e06d53;
+    color: #fffbf4;
+    border-color: #2b251f;
+  }
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+  }
+</style>
+
+<form id="ejercicioForm">
   <input type="hidden" id="idEjercicio" value="">
 
   <div>
-    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Nombre</label>
-    <input type="text" id="nombreEjercicio" required class="search-input" style="width:100%;" placeholder="Ej: Press banca">
+    <label for="nombreEjercicio">Nombre</label>
+    <input type="text" id="nombreEjercicio" required class="search-input" placeholder="Ej: Press banca">
   </div>
 
   <div>
-    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Grupo muscular</label>
-    <select id="grupoEjercicio" class="search-input" style="width:100%;">
+    <label for="grupoEjercicio">Grupo muscular</label>
+    <select id="grupoEjercicio" class="search-input">
       <option value="Pecho">Pecho</option>
       <option value="Espalda">Espalda</option>
       <option value="Pierna">Pierna</option>
@@ -20,29 +66,150 @@
     </select>
   </div>
 
-  <!-- NUEVOS CAMPOS: video e imagen -->
   <div>
-    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">URL de video (YouTube)</label>
-    <input type="url" id="videoEjercicio" class="search-input" style="width:100%;" placeholder="https://www.youtube.com/watch?v=...">
+    <label for="videoEjercicio">URL de video (YouTube)</label>
+    <input type="url" id="videoEjercicio" class="search-input" placeholder="https://www.youtube.com/watch?v=...">
   </div>
 
   <div>
-    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">URL de imagen (opcional)</label>
-    <input type="url" id="imagenEjercicio" class="search-input" style="width:100%;" placeholder="https://ejemplo.com/imagen.jpg">
+    <label for="imagenEjercicio">URL de imagen (opcional)</label>
+    <input type="url" id="imagenEjercicio" class="search-input" placeholder="https://ejemplo.com/imagen.jpg">
     <div style="font-size:12px; opacity:0.6; margin-top:4px;">Si se deja vacío, se usará el emoji del grupo.</div>
   </div>
 
   <div>
-    <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Descripción</label>
-    <textarea id="descripcionEjercicio" class="search-input" style="width:100%; height:80px; resize:vertical; padding:8px 12px; border:1px solid rgba(43,37,31,0.2); border-radius:8px; font-family:inherit; font-size:14px;" placeholder="Describe el ejercicio, técnica, consejos..."></textarea>
+    <label for="descripcionEjercicio">Descripción</label>
+    <textarea id="descripcionEjercicio" class="search-input" placeholder="Describe el ejercicio, técnica, consejos..."></textarea>
   </div>
 
   <div id="deleteButtonContainer" style="display:none; margin: 4px 0 8px 0;">
     <button type="button" class="modal-boton peligro" id="btnEliminarEjercicio" style="width:100%;">🗑️ Eliminar ejercicio</button>
   </div>
 
-  <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+  <div class="form-actions">
     <button type="button" class="modal-boton" id="formCancelar">Cancelar</button>
     <button type="submit" class="modal-boton primario">Guardar</button>
   </div>
 </form>
+
+<script>
+  // ============================================================
+  //  INICIALIZADOR DEL FORMULARIO
+  // ============================================================
+  window.initFormulario = function(ejercicio, modalRef) {
+    const form = document.getElementById('ejercicioForm');
+    const nombreInput = document.getElementById('nombreEjercicio');
+    const grupoSelect = document.getElementById('grupoEjercicio');
+    const descTextarea = document.getElementById('descripcionEjercicio');
+    const idInput = document.getElementById('idEjercicio');
+    const videoInput = document.getElementById('videoEjercicio');
+    const imagenInput = document.getElementById('imagenEjercicio');
+    const deleteContainer = document.getElementById('deleteButtonContainer');
+    const btnEliminar = document.getElementById('btnEliminarEjercicio');
+    const cancelBtn = document.getElementById('formCancelar');
+
+    // ===== Rellenar si es edición =====
+    if (ejercicio && ejercicio.id) {
+      nombreInput.value = ejercicio.nombre;
+      grupoSelect.value = ejercicio.grupo;
+      descTextarea.value = ejercicio.descripcion || '';
+      idInput.value = ejercicio.id;
+      videoInput.value = ejercicio.video || '';
+      imagenInput.value = ejercicio.imagen || '';
+      deleteContainer.style.display = 'block';
+    } else {
+      deleteContainer.style.display = 'none';
+      idInput.value = '';
+      nombreInput.value = '';
+      grupoSelect.value = 'Pecho';
+      descTextarea.value = '';
+      videoInput.value = '';
+      imagenInput.value = '';
+    }
+
+    // ===== Autocompletar imagen desde video =====
+    function autocompletarImagen() {
+      if (!imagenInput.value) {
+        const thumb = getYouTubeThumbnail(videoInput.value);
+        if (thumb) imagenInput.value = thumb;
+      }
+    }
+    videoInput.removeEventListener('input', autocompletarImagen);
+    videoInput.addEventListener('input', autocompletarImagen);
+
+    // ===== Eliminar =====
+    btnEliminar.onclick = function() {
+      mostrarConfirmacion(
+        '🗑️ Eliminar ejercicio',
+        `¿Estás seguro de eliminar "${ejercicio.nombre}"? Esta acción no se puede deshacer.`,
+        () => {
+          const index = window.ejercicios.findIndex(e => e.id === ejercicio.id);
+          if (index !== -1) {
+            window.ejercicios.splice(index, 1);
+            window.guardarEjercicios();
+            window.actualizarVistaEjercicios();
+            modalRef.cerrar();
+          }
+        }
+      );
+    };
+
+    // ===== Envío del formulario =====
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      const nombre = nombreInput.value.trim();
+      const grupo = grupoSelect.value;
+      const descripcion = descTextarea.value.trim();
+      const video = videoInput.value.trim();
+      const imagen = imagenInput.value.trim();
+
+      if (!nombre) {
+        mostrarAlerta('Error', 'El nombre es obligatorio');
+        return;
+      }
+
+      const datos = { nombre, grupo, descripcion, video, imagen };
+      const id = idInput.value;
+
+      if (id) {
+        // Editar
+        datos.id = parseInt(id);
+        const index = window.ejercicios.findIndex(e => e.id === datos.id);
+        if (index !== -1) {
+          window.ejercicios[index] = { ...window.ejercicios[index], ...datos };
+        }
+      } else {
+        // Nuevo
+        const nuevoId = window.ejercicios.length ? Math.max(...window.ejercicios.map(e => e.id)) + 1 : 1;
+        window.ejercicios.push({ id: nuevoId, ...datos });
+      }
+
+      window.guardarEjercicios();
+      window.actualizarVistaEjercicios();
+      modalRef.cerrar();
+    };
+
+    // ===== Cancelar =====
+    cancelBtn.onclick = function() {
+      modalRef.cerrar();
+    };
+
+    // ===== Limpiar eventos al cerrar =====
+    const originalCerrar = modalRef.cerrar;
+    modalRef.cerrar = function() {
+      videoInput.removeEventListener('input', autocompletarImagen);
+      originalCerrar();
+    };
+  };
+
+  // ===== Función auxiliar para extraer miniatura de YouTube =====
+  function getYouTubeThumbnail(url) {
+    if (!url) return null;
+    const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&?\/]+)/;
+    const match = url.match(regex);
+    if (match) {
+      return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+    }
+    return null;
+  }
+</script>

@@ -1,3 +1,4 @@
+<!-- ===== ESTILOS EXCLUSIVOS DE LA LISTA ===== -->
 <style>
   /* Degradados superior e inferior fijos */
   .scroll-fade-top,
@@ -29,7 +30,7 @@
     position: relative;
   }
 
-  /* ===== Header fijo al hacer scroll ===== */
+  /* Header fijo al hacer scroll */
   .profile-card {
     display: flex;
     align-items: center;
@@ -193,7 +194,7 @@
     color: var(--bg-card);
   }
 
-  /* ===== TARJETAS DE EJERCICIOS ===== */
+  /* Tarjetas de ejercicios */
   .exercise-item {
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -249,128 +250,6 @@
     font-size: 14px;
   }
 
-  /* ===== ESTILOS DEL MODAL DE DETALLE ===== */
-  /*.modal-detalle-ejercicio .modal-box {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-    padding: 20px 16px 80px 16px; /* Espacio para botones fijos /
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: none !important;
-    border: none !important;
-    box-sizing: border-box; /* Crucial para que el padding no rompa el height */
-  }*/
-
-  /* Selector clave: el div intermedio creado por mostrarModal */
-  /*.modal-detalle-ejercicio .modal-box > div {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0; /* Evita que el contenedor se estire por el contenido /
-    height: 100%;
-  }*/
-  
-.modal-detalle-ejercicio .modal-overlay {
-  padding: 0 !important;
-}
-
-.modal-detalle-ejercicio .modal-box {
-  width: 100vw !important;
-  max-width: 100vw !important;
-  height: 100vh !important;
-  max-height: 100vh !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  /* 80px abajo reserva espacio exacto para tus botones fijos */
-  padding: 20px 16px 80px 16px !important; 
-  
-  /* CAMBIO CLAVE: Grid layout perfecto */
-  display: grid !important;
-  grid-template-rows: auto 1fr !important;
-  
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Forzamos al div intermedio generado por mostrarModal a ser un contenedor flexible completo */
-.modal-detalle-ejercicio .modal-box > div {
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-  height: 100% !important;
-}
-
-  /* ===== BOTONES FIJOS CON POSITION: FIXED ===== */
-  .detalle-botones-fijos {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 21000;
-    display: flex;
-    gap: 10px;
-    padding: 0 16px;
-    width: auto;
-    max-width: 100%;
-    box-sizing: border-box;
-    justify-content: center;
-    background: transparent;
-    pointer-events: none;
-  }
-
-  .detalle-botones-fijos .modal-boton {
-    pointer-events: auto;
-    flex: 0 1 auto;
-    padding: 10px 18px;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background-color: var(--bg-card);
-    border: var(--border-width) solid var(--text-dark);
-    border-radius: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 3px 0 var(--text-dark);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    color: var(--text-dark);
-    font-family: 'Space Mono', monospace;
-  }
-
-  .detalle-botones-fijos .modal-boton:active {
-    transform: scale(0.95);
-    box-shadow: 0 1px 0 var(--text-dark);
-  }
-
-  .detalle-botones-fijos .modal-boton.primario {
-    background-color: var(--text-dark);
-    color: var(--bg-card);
-  }
-
-  @media (max-width: 600px) {
-    .detalle-botones-fijos {
-      width: 90%;
-      gap: 8px;
-    }
-    .detalle-botones-fijos .modal-boton {
-      flex: 1;
-      justify-content: center;
-      padding: 14px 8px;
-      font-size: 20px;
-    }
-    .detalle-botones-fijos .btn-text {
-      display: none;
-    }
-  }
-
-  /* Asegurar que #exerciseList ocupe todo el ancho */
   #exerciseList {
     width: 100%;
     padding: 0;
@@ -423,69 +302,63 @@
 
 <div class="section-label">Lista ejercicios</div>
 
-<!-- Lista de ejercicios (cada ejercicio es un .card) -->
+<!-- Lista de ejercicios -->
 <div id="exerciseList"></div>
 
 <script>
   // ============================================================
-  //  FUNCIÓN PARA EXTRAER MINIATURA DE YOUTUBE
+  //  DATOS Y FUNCIONES GLOBALES
   // ============================================================
-  function getYouTubeThumbnail(url) {
-    if (!url) return null;
-    const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&?\/]+)/;
-    const match = url.match(regex);
-    if (match) {
-      return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+  let ejercicios = [
+    {
+      id: 1,
+      nombre: "Press de banca",
+      grupo: "Pecho",
+      descripcion: "Ejercicio básico para desarrollar pectorales. Acostado en banco plano, levanta la barra con agarre ligeramente más ancho que los hombros. Baja controladamente hasta tocar el pecho y empuja hacia arriba.",
+      video: "",
+      imagen: ""
+    },
+    {
+      id: 2,
+      nombre: "Sentadilla",
+      grupo: "Pierna",
+      descripcion: "Movimiento fundamental para pierna y glúteo. Coloca la barra sobre los trapecios, baja hasta que los muslos queden paralelos al suelo, manteniendo la espalda recta y el pecho erguido.",
+      video: "",
+      imagen: ""
+    },
+    {
+      id: 3,
+      nombre: "Remo con barra",
+      grupo: "Espalda",
+      descripcion: "Ejercicio para la espalda media y dorsal ancho. Inclínate hacia adelante con la barra, tira de ella hacia el abdomen manteniendo los codos pegados al cuerpo.",
+      video: "",
+      imagen: ""
+    },
+    {
+      id: 4,
+      nombre: "Curl de bíceps",
+      grupo: "Brazos",
+      descripcion: "Aísla el bíceps. De pie o sentado, con las pesas a los lados, flexiona los codos llevando las pesas hacia los hombros, controlando el descenso.",
+      video: "",
+      imagen: ""
+    },
+    {
+      id: 5,
+      nombre: "Fondos en paralelas",
+      grupo: "Pecho",
+      descripcion: "Ejercicio de empuje para pectoral inferior y tríceps. En paralelas, baja el cuerpo hasta que los hombros estén por debajo de los codos, luego empuja hacia arriba.",
+      video: "",
+      imagen: ""
+    },
+    {
+      id: 6,
+      nombre: "Peso muerto",
+      grupo: "Pierna",
+      descripcion: "Levantamiento de barra desde el suelo. Con pies separados al ancho de caderas, agarra la barra, mantén la espalda recta y levanta extendiendo caderas y rodillas.",
+      video: "",
+      imagen: ""
     }
-    return null;
-  }
-
-  // ============================================================
-  //  DATOS
-  // ============================================================
-  let ejercicios = [{
-    id: 1,
-    nombre: "Press de banca",
-    grupo: "Pecho",
-    descripcion: "Ejercicio básico para desarrollar pectorales. Acostado en banco plano, levanta la barra con agarre ligeramente más ancho que los hombros. Baja controladamente hasta tocar el pecho y empuja hacia arriba.",
-    video: "",
-    imagen: ""
-  }, {
-    id: 2,
-    nombre: "Sentadilla",
-    grupo: "Pierna",
-    descripcion: "Movimiento fundamental para pierna y glúteo. Coloca la barra sobre los trapecios, baja hasta que los muslos queden paralelos al suelo, manteniendo la espalda recta y el pecho erguido.",
-    video: "",
-    imagen: ""
-  }, {
-    id: 3,
-    nombre: "Remo con barra",
-    grupo: "Espalda",
-    descripcion: "Ejercicio para la espalda media y dorsal ancho. Inclínate hacia adelante con la barra, tira de ella hacia el abdomen manteniendo los codos pegados al cuerpo.",
-    video: "",
-    imagen: ""
-  }, {
-    id: 4,
-    nombre: "Curl de bíceps",
-    grupo: "Brazos",
-    descripcion: "Aísla el bíceps. De pie o sentado, con las pesas a los lados, flexiona los codos llevando las pesas hacia los hombros, controlando el descenso.",
-    video: "",
-    imagen: ""
-  }, {
-    id: 5,
-    nombre: "Fondos en paralelas",
-    grupo: "Pecho",
-    descripcion: "Ejercicio de empuje para pectoral inferior y tríceps. En paralelas, baja el cuerpo hasta que los hombros estén por debajo de los codos, luego empuja hacia arriba.",
-    video: "",
-    imagen: ""
-  }, {
-    id: 6,
-    nombre: "Peso muerto",
-    grupo: "Pierna",
-    descripcion: "Levantamiento de barra desde el suelo. Con pies separados al ancho de caderas, agarra la barra, mantén la espalda recta y levanta extendiendo caderas y rodillas.",
-    video: "",
-    imagen: ""
-  }];
+  ];
 
   // Cargar desde localStorage
   const stored = localStorage.getItem('ejercicios');
@@ -503,14 +376,6 @@
   }
 
   let filtroGrupo = null;
-
-  function guardarEjercicios() {
-    localStorage.setItem('ejercicios', JSON.stringify(ejercicios));
-  }
-
-  // ============================================================
-  //  MAPA DE EMOJIS POR GRUPO
-  // ============================================================
   const emojiMap = {
     'Pecho': '🏋️',
     'Espalda': '🔱',
@@ -519,12 +384,16 @@
     'Hombros': '🏋️‍♂️',
     'Abdomen': '🫀',
     'Cardio': '🏃',
-    'Otro': '🎯'
+    'Otro': `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M400-320q17 0 28.5-11.5T440-360v-4q0-2-1-4 17 0 29-11.5t12-28.5q0-17-11.5-28.5T440-448q-8 0-15.5 3.5T412-436L309-552q5-5 8-12.5t3-15.5q0-17-11.5-28.5T280-620q-17 0-28.5 11.5T240-580v4q0 2 1 4-17 0-29 11.5T200-532q0 17 11.5 28.5T240-492q9 0 16.5-3.5T269-505l103 116q-6 5-9 13t-3 16q0 17 11.5 28.5T400-320ZM80-449l44-70 316 297q12 11 26.5 16.5T495-200q12 0 23-3.5t20-8.5l342-216v94L580-145q-19 12-40.5 18.5T494-120q-30 0-58-11.5T385-164L80-449Zm177-283 43-68q75 37 139 101.5T535-564q36-38 79.5-60.5T736-668q46-13 79.5-25t64.5-27v88q-27 11-56.5 21T757-591q-84 22-125.5 49T554-458q-5 8-14 13t-20 5q-14 0-25-9t-14-22q-18-76-80.5-149T257-732ZM124-519q72 67 158 148.5T440-222q12 11 26.5 16.5T495-200q12 0 23-3.5t20-8.5q63-39 165-103.5T880-428L538-212q-9 5-20 8.5t-23 3.5q-14 0-28.5-5.5T440-222L124-519Z"/></svg>`
   };
 
-  // ============================================================
-  //  RENDERIZADO DE LISTA (tarjetas)
-  // ============================================================
+  // ===== Funciones globales =====
+  window.ejercicios = ejercicios;
+
+  window.guardarEjercicios = function() {
+    localStorage.setItem('ejercicios', JSON.stringify(ejercicios));
+  };
+
   function renderizarLista() {
     const container = document.getElementById('exerciseList');
     const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -562,337 +431,15 @@
     });
     container.innerHTML = html;
 
-    // Click en tarjeta → abrir detalle
     container.querySelectorAll('.exercise-item').forEach(card => {
       card.addEventListener('click', function() {
         const id = parseInt(this.dataset.id);
         const ejercicio = ejercicios.find(e => e.id === id);
-        if (ejercicio) mostrarDetalleEjercicio(ejercicio);
+        if (ejercicio) window.mostrarDetalleEjercicio(ejercicio);
       });
     });
   }
 
-  // ============================================================
-  //  MODAL DE DETALLE (carga HTML externo)
-  // ============================================================
-  let botonesFijosContainer = null;
-/*
-  function mostrarDetalleEjercicio(ejercicio) {
-    const emoji = emojiMap[ejercicio.grupo] || '🏋️';
-    const video = ejercicio.video && ejercicio.video.trim() !== '' ? ejercicio.video : null;
-
-    fetch('views/ejercicios/detalle-ejercicio.html')
-      .then(res => {
-        if (!res.ok) throw new Error('No se pudo cargar el detalle');
-        return res.text();
-      })
-      .then(html => {
-        const modalRef = mostrarModal({
-          titulo: `${emoji} ${ejercicio.nombre}`,
-          contenido: html,
-          botones: []
-        });
-
-        // Añadir clase para estilos del modal (pantalla completa)
-        setTimeout(() => {
-          const overlay = document.querySelector('.modal-overlay.active');
-          if (overlay) {
-            overlay.classList.add('modal-detalle-ejercicio');
-          }
-        }, 50);
-
-        // Rellenar datos y crear botones fijos
-        setTimeout(() => {
-          // Imagen
-          const imgContainer = document.getElementById('detalleImagenContainer');
-          if (imgContainer) {
-            const imagen = ejercicio.imagen && ejercicio.imagen.trim() !== '' ? ejercicio.imagen : null;
-            imgContainer.innerHTML = imagen ? `<img src="${imagen}" alt="${ejercicio.nombre}" class="detalle-imagen" loading="lazy">` : '';
-          }
-
-          const grupoEl = document.getElementById('detalleGrupo');
-          if (grupoEl) grupoEl.textContent = ejercicio.grupo;
-
-          const descEl = document.getElementById('detalleDescripcion');
-          if (descEl) descEl.textContent = ejercicio.descripcion || 'Sin descripción.';
-
-          // Crear botones fijos
-          crearBotonesFijos(modalRef, ejercicio, video);
-        }, 100);
-      })
-      .catch(err => {
-        console.error(err);
-        mostrarAlerta('Error', 'No se pudo cargar el detalle del ejercicio.');
-      });
-  }
-*/
-  function mostrarDetalleEjercicio(ejercicio) {
-  const emoji = emojiMap[ejercicio.grupo] || '🏋️';
-  const video = ejercicio.video && ejercicio.video.trim() !== '' ? ejercicio.video : null;
-
-  fetch('views/ejercicios/detalle-ejercicio.html')
-    .then(res => {
-      if (!res.ok) throw new Error('No se pudo cargar el detalle');
-      return res.text();
-    })
-    .then(html => {
-      const modalRef = mostrarModal({
-        titulo: `${emoji} ${ejercicio.nombre}`,
-        contenido: html,
-        botones: []
-      });
-
-      // Añadir clase para estilos del modal (pantalla completa)
-      setTimeout(() => {
-        const overlay = document.querySelector('.modal-overlay.active');
-        if (overlay) {
-          overlay.classList.add('modal-detalle-ejercicio');
-        }
-      }, 50);
-
-      // Rellenar datos y crear botones fijos
-      setTimeout(() => {
-        
-        // ─── NUEVO: AJUSTE DEL CONTENEDOR INTERMEDIO GENERADO POR JS ───
-        const modalBox = document.querySelector('.modal-detalle-ejercicio .modal-box');
-        if (modalBox) {
-          // Buscamos el primer div hijo directo de modal-box (el contenedor intermedio)
-          const contentWrapper = modalBox.querySelector(':scope > div');
-          if (contentWrapper) {
-            contentWrapper.style.display = 'flex';
-            contentWrapper.style.flexDirection = 'column';
-            contentWrapper.style.minHeight = '0';
-            contentWrapper.style.height = '100%';
-            contentWrapper.style.overflow = 'hidden';
-            contentWrapper.style.flex = '1';
-          }
-        }
-        // ──────────────────────────────────────────────────────────────
-
-        // Imagen
-        const imgContainer = document.getElementById('detalleImagenContainer');
-        if (imgContainer) {
-          const imagen = ejercicio.imagen && ejercicio.imagen.trim() !== '' ? ejercicio.imagen : null;
-          imgContainer.innerHTML = imagen ? `<img src="${imagen}" alt="${ejercicio.nombre}" class="detalle-imagen" loading="lazy">` : '';
-        }
-
-        const grupoEl = document.getElementById('detalleGrupo');
-        if (grupoEl) grupoEl.textContent = ejercicio.grupo;
-
-        const descEl = document.getElementById('detalleDescripcion');
-        if (descEl) descEl.textContent = ejercicio.descripcion || 'Sin descripción.';
-
-        // Crear botones fijos
-        crearBotonesFijos(modalRef, ejercicio, video);
-      }, 100);
-    })
-    .catch(err => {
-      console.error(err);
-      mostrarAlerta('Error', 'No se pudo cargar el detalle del ejercicio.');
-    });
-}
-  
-  function crearBotonesFijos(modalRef, ejercicio, video) {
-    eliminarBotonesFijos();
-
-    const container = document.createElement('div');
-    container.className = 'detalle-botones-fijos';
-    container.id = 'detalleBotonesFijos';
-
-    // Botón Cerrar
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'modal-boton';
-    closeBtn.title = 'Cerrar';
-    closeBtn.innerHTML = `✖ <span class="btn-text">Cerrar</span>`;
-    closeBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      modalRef.cerrar();
-      eliminarBotonesFijos();
-    });
-    container.appendChild(closeBtn);
-
-    // Botón Reproducir (si hay video)
-    if (video) {
-      const playBtn = document.createElement('button');
-      playBtn.className = 'modal-boton primario';
-      playBtn.title = 'Reproducir vídeo';
-      playBtn.innerHTML = `▶ <span class="btn-text">Reproducir</span>`;
-      playBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        window.open(video, '_blank');
-      });
-      container.appendChild(playBtn);
-    }
-
-    // Botón Editar
-    const editBtn = document.createElement('button');
-    editBtn.className = 'modal-boton primario';
-    editBtn.title = 'Editar ejercicio';
-    editBtn.innerHTML = `✏️ <span class="btn-text">Editar</span>`;
-    editBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      modalRef.cerrar();
-      eliminarBotonesFijos();
-      setTimeout(() => abrirFormularioEdicion(ejercicio), 200);
-    });
-    container.appendChild(editBtn);
-
-    document.body.appendChild(container);
-    botonesFijosContainer = container;
-
-    const originalCerrar = modalRef.cerrar;
-    modalRef.cerrar = function() {
-      originalCerrar();
-      eliminarBotonesFijos();
-    };
-  }
-
-  function eliminarBotonesFijos() {
-    if (botonesFijosContainer) {
-      botonesFijosContainer.remove();
-      botonesFijosContainer = null;
-    }
-  }
-
-  // ============================================================
-  //  FORMULARIO DE EDICIÓN / NUEVO
-  // ============================================================
-  function abrirFormularioEdicion(ejercicio = null) {
-    fetch('views/ejercicios/formularioejercicios.html')
-      .then(res => {
-        if (!res.ok) throw new Error('No se pudo cargar el formulario');
-        return res.text();
-      })
-      .then(html => {
-        mostrarModal({
-          titulo: ejercicio ? '✏️ Editar ejercicio' : '➕ Nuevo ejercicio',
-          contenido: html,
-          botones: []
-        });
-
-        requestAnimationFrame(() => {
-          const form = document.getElementById('ejercicioForm');
-          if (!form) {
-            console.error('No se encontró el formulario');
-            return;
-          }
-
-          const nombreInput = document.getElementById('nombreEjercicio');
-          const grupoSelect = document.getElementById('grupoEjercicio');
-          const descTextarea = document.getElementById('descripcionEjercicio');
-          const idInput = document.getElementById('idEjercicio');
-          const videoInput = document.getElementById('videoEjercicio');
-          const imagenInput = document.getElementById('imagenEjercicio');
-          const deleteContainer = document.getElementById('deleteButtonContainer');
-          const btnEliminar = document.getElementById('btnEliminarEjercicio');
-          const cancelBtn = document.getElementById('formCancelar');
-
-          if (ejercicio && ejercicio.id) {
-            if (nombreInput) nombreInput.value = ejercicio.nombre;
-            if (grupoSelect) grupoSelect.value = ejercicio.grupo;
-            if (descTextarea) descTextarea.value = ejercicio.descripcion || '';
-            if (idInput) idInput.value = ejercicio.id;
-            if (videoInput) videoInput.value = ejercicio.video || '';
-            if (imagenInput) imagenInput.value = ejercicio.imagen || '';
-            if (deleteContainer) deleteContainer.style.display = 'block';
-
-            if (btnEliminar) {
-              btnEliminar.onclick = null;
-              btnEliminar.addEventListener('click', function() {
-                mostrarConfirmacion(
-                  '🗑️ Eliminar ejercicio',
-                  `¿Estás seguro de eliminar "${ejercicio.nombre}"? Esta acción no se puede deshacer.`,
-                  () => {
-                    ejercicios = ejercicios.filter(e => e.id !== ejercicio.id);
-                    guardarEjercicios();
-                    actualizarFiltros();
-                    renderizarLista();
-                    const overlay = document.querySelector('.modal-overlay');
-                    if (overlay) {
-                      overlay.classList.remove('active');
-                      setTimeout(() => overlay.remove(), 200);
-                    }
-                  }
-                );
-              });
-            }
-          } else {
-            if (deleteContainer) deleteContainer.style.display = 'none';
-            if (idInput) idInput.value = '';
-            if (nombreInput) nombreInput.value = '';
-            if (grupoSelect) grupoSelect.value = 'Pecho';
-            if (descTextarea) descTextarea.value = '';
-            if (videoInput) videoInput.value = '';
-            if (imagenInput) imagenInput.value = '';
-          }
-
-          // Autocompletado de imagen desde video
-          if (videoInput && imagenInput) {
-            videoInput.removeEventListener('input', autocompleteImagen);
-            videoInput.addEventListener('input', autocompleteImagen);
-            function autocompleteImagen() {
-              if (!imagenInput.value) {
-                const thumb = getYouTubeThumbnail(this.value);
-                if (thumb) imagenInput.value = thumb;
-              }
-            }
-          }
-
-          form.onsubmit = function(e) {
-            e.preventDefault();
-            const nombre = document.getElementById('nombreEjercicio').value.trim();
-            const grupo = document.getElementById('grupoEjercicio').value;
-            const descripcion = document.getElementById('descripcionEjercicio').value.trim();
-            const video = document.getElementById('videoEjercicio').value.trim();
-            const imagen = document.getElementById('imagenEjercicio').value.trim();
-            const id = document.getElementById('idEjercicio').value;
-
-            if (!nombre) {
-              mostrarAlerta('Error', 'El nombre es obligatorio');
-              return;
-            }
-
-            const datos = { nombre, grupo, descripcion, video, imagen };
-            if (id) {
-              datos.id = parseInt(id);
-              const index = ejercicios.findIndex(e => e.id === datos.id);
-              if (index !== -1) {
-                ejercicios[index] = { ...ejercicios[index], ...datos };
-              }
-            } else {
-              const nuevoId = ejercicios.length ? Math.max(...ejercicios.map(e => e.id)) + 1 : 1;
-              ejercicios.push({ id: nuevoId, ...datos });
-            }
-            guardarEjercicios();
-            actualizarFiltros();
-            renderizarLista();
-            cerrarModalActual();
-          };
-
-          if (cancelBtn) {
-            cancelBtn.onclick = function() {
-              cerrarModalActual();
-            };
-          }
-
-          function cerrarModalActual() {
-            const overlay = document.querySelector('.modal-overlay');
-            if (overlay) {
-              overlay.classList.remove('active');
-              setTimeout(() => overlay.remove(), 200);
-            }
-          }
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        mostrarAlerta('Error', 'No se pudo cargar el formulario.');
-      });
-  }
-
-  // ============================================================
-  //  FILTROS (grupos)
-  // ============================================================
   function actualizarFiltros() {
     const grupos = [...new Set(ejercicios.map(e => e.grupo))].sort();
     const container = document.getElementById('filterOptions');
@@ -917,24 +464,123 @@
     });
   }
 
+  window.actualizarVistaEjercicios = function() {
+    renderizarLista();
+    actualizarFiltros();
+  };
+
   // ============================================================
-  //  INICIALIZACIÓN
+  //  ABRIR DETALLE (con ejecución de scripts)
+  // ============================================================
+  window.mostrarDetalleEjercicio = function(ejercicio) {
+    fetch('views/ejercicios/detalle-ejercicio.html')
+      .then(res => {
+        if (!res.ok) throw new Error('No se pudo cargar el detalle');
+        return res.text();
+      })
+      .then(html => {
+        const modalRef = mostrarModal({
+          titulo: `${emojiMap[ejercicio.grupo] || '🏋️'} ${ejercicio.nombre}`,
+          contenido: html,
+          botones: []
+        });
+
+        // Añadir clase para estilos de pantalla completa
+        setTimeout(() => {
+          const overlay = document.querySelector('.modal-overlay.active');
+          if (overlay) overlay.classList.add('modal-detalle-ejercicio');
+        }, 50);
+
+        // Esperar a que el DOM esté listo y ejecutar scripts
+        setTimeout(() => {
+          const modalBox = document.querySelector('.modal-detalle-ejercicio .modal-box');
+          if (!modalBox) {
+            console.error('No se encontró el modal box');
+            return;
+          }
+
+          // Ejecutar scripts inline
+          const scripts = modalBox.querySelectorAll('script');
+          scripts.forEach(script => {
+            if (!script.src) {
+              try {
+                Function(script.textContent)();
+              } catch (e) {
+                console.error('Error ejecutando script de detalle:', e);
+              }
+            }
+            // Eliminar el script del DOM (opcional)
+            script.remove();
+          });
+
+          // Ahora initDetalle debe estar definida
+          if (typeof window.initDetalle === 'function') {
+            window.initDetalle(ejercicio, modalRef);
+          } else {
+            console.error('initDetalle no definida después de ejecutar scripts');
+          }
+        }, 100);
+      })
+      .catch(() => mostrarAlerta('Error', 'No se pudo cargar el detalle del ejercicio.'));
+  };
+
+  // ============================================================
+  //  ABRIR FORMULARIO (con ejecución de scripts)
+  // ============================================================
+  window.abrirFormularioEdicion = function(ejercicio = null) {
+    fetch('views/ejercicios/formularioejercicios.html')
+      .then(res => {
+        if (!res.ok) throw new Error('No se pudo cargar el formulario');
+        return res.text();
+      })
+      .then(html => {
+        const modalRef = mostrarModal({
+          titulo: ejercicio ? '✏️ Editar ejercicio' : '➕ Nuevo ejercicio',
+          contenido: html,
+          botones: []
+        });
+
+        setTimeout(() => {
+          const modalBox = document.querySelector('.modal-overlay.active .modal-box');
+          if (!modalBox) {
+            console.error('No se encontró el modal box del formulario');
+            return;
+          }
+
+          const scripts = modalBox.querySelectorAll('script');
+          scripts.forEach(script => {
+            if (!script.src) {
+              try {
+                Function(script.textContent)();
+              } catch (e) {
+                console.error('Error ejecutando script del formulario:', e);
+              }
+            }
+            script.remove();
+          });
+
+          if (typeof window.initFormulario === 'function') {
+            window.initFormulario(ejercicio, modalRef);
+          } else {
+            console.error('initFormulario no definida después de ejecutar scripts');
+          }
+        }, 100);
+      })
+      .catch(() => mostrarAlerta('Error', 'No se pudo cargar el formulario.'));
+  };
+
+  // ============================================================
+  //  INICIALIZACIÓN DE LA VISTA
   // ============================================================
   window.initEjercicios = function() {
     console.log('Inicializando Ejercicios');
-    
-    // ─── DESBLOQUEO TOTAL Y ELIMINACIÓN DE MODALES RESIDUALES ───
-  // 1. Forzar al body a recuperar el scroll normal
-  document.body.style.overflow = '';
-  document.body.style.pointerEvents = '';
-  document.body.classList.remove('modal-open'); 
 
-  // 2. Buscar y destruir cualquier overlay de modal activo que se haya quedado huérfano en el DOM
-  const overlaysResiduales = document.querySelectorAll('.modal-overlay');
-  overlaysResiduales.forEach(overlay => {
-    overlay.remove();
-  });
-    
+    // Limpieza de modales residuales
+    document.body.style.overflow = '';
+    document.body.style.pointerEvents = '';
+    document.body.classList.remove('modal-open');
+    document.querySelectorAll('.modal-overlay').forEach(el => el.remove());
+
     renderizarLista();
     actualizarFiltros();
 
@@ -968,7 +614,7 @@
       }
     });
 
-    // Botón de ajustes
+    // Botón de ajustes (engranaje / flecha)
     const settingsBtn = document.getElementById('settingsBtnLifebar');
     let isAtTop = true;
 
@@ -991,26 +637,26 @@
     settingsBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       if (isAtTop) {
-        const opciones = [{
-          label: '➕ Nuevo ejercicio',
-          callback: () => abrirFormularioEdicion(null)
-        }, {
-          label: '🗑️ Borrar todos',
-          callback: () => {
-            mostrarConfirmacion('Borrar todos', '¿Eliminar todos los ejercicios?', () => {
-              ejercicios = [];
-              guardarEjercicios();
-              actualizarFiltros();
-              renderizarLista();
-            });
+        const opciones = [
+          {
+            label: '➕ Nuevo ejercicio',
+            callback: () => window.abrirFormularioEdicion(null)
+          },
+          {
+            label: '🗑️ Borrar todos',
+            callback: () => {
+              mostrarConfirmacion('Borrar todos', '¿Eliminar todos los ejercicios?', () => {
+                ejercicios = [];
+                window.guardarEjercicios();
+                window.actualizarVistaEjercicios();
+              });
+            }
           }
-        }];
+        ];
         mostrarMenuContextual(opciones, e);
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   };
-
-
 </script>
