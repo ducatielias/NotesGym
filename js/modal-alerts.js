@@ -89,11 +89,13 @@ function injectModalStyles() {
     box-sizing: border-box;
     box-shadow: 0 var(--shadow-offset) 0 var(--text-dark);
     font-family: 'Space Mono', monospace;
-    transform: scale(0.95);
-    transition: transform 0.2s ease;
+    /*transform: scale(0.95);*/
+    /*transition: transform 0.2s ease;*/
+    transform: translateY(20px) scale(0.98); /* En lugar de solo scale(0.95), añadir un leve desplazamiento hacia arriba suaviza el impacto visual */
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
   }
   .modal-overlay.active .modal-box {
-    transform: scale(1);
+    transform: translateY(0) scale(1);/*transform: scale(1);*/
   }
   .modal-titulo {
     font-size: 20px;
@@ -251,9 +253,12 @@ function mostrarModal(opciones) {
   document.addEventListener('keydown', handleEsc);
 
   // Mostrar animación
-  requestAnimationFrame(() => {
+  /*requestAnimationFrame(() => {
     overlay.classList.add('active');
-  });
+  });*/
+  setTimeout(() => {
+    overlay.classList.add('active');
+  }, 20);
 
   // Retornar objeto para control externo
   return {
