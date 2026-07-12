@@ -3,7 +3,7 @@
   .detalle-contenido {
     display: flex;
     flex-direction: column;
-    min-height: 100%;         /* Ocupa toda la altura del modal */
+    /*min-height: 100%;*/         /* Ocupa toda la altura del modal */
     height: 100%;
     overflow-y: auto;         /* Scroll en el contenedor principal */
     padding: 0 0 10px 0;      /* Espacio inferior para separar del borde */
@@ -68,6 +68,8 @@
     opacity: 0.85;
     white-space: pre-wrap;
     word-wrap: break-word;
+    
+    word-break: break-word;
   }
   
   .detalle-descripcion-wrapper p a {
@@ -169,6 +171,18 @@
     vertical-align: middle;
     flex-shrink: 0;
   }
+  
+  /* ===== ARREGLO PARA EL TÍTULO DEL MODAL ===== */
+.modal-detalle-ejercicio .modal-box .modal-titulo, 
+.modal-detalle-ejercicio .modal-box h2, 
+.modal-detalle-ejercicio .modal-box h1 {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+  max-width: 100% !important;
+  font-size: 1.5rem !important; /* Ajusta el tamaño para que quepa bien en móviles */
+}
 </style>
 
 <div class="detalle-contenido">
