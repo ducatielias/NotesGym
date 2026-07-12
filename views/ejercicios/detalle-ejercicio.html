@@ -3,17 +3,20 @@
   .detalle-contenido {
     display: flex;
     flex-direction: column;
+    min-height: 100%;         /* Ocupa toda la altura del modal */
     height: 100%;
+    overflow-y: auto;         /* Scroll en el contenedor principal */
+    padding: 0 0 10px 0;      /* Espacio inferior para separar del borde */
+    box-sizing: border-box;
     flex: 1;
-    min-height: 0;
-    overflow: hidden;
-    
   }
+  
   .detalle-cabecera {
     flex-shrink: 0;
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(43, 37, 31, 0.1);
   }
+  
   .detalle-imagen {
     width: 100%;
     max-height: 200px;
@@ -23,9 +26,11 @@
     margin-bottom: 12px;
     box-sizing: border-box;
   }
+  
   .detalle-grupo {
     margin-bottom: 8px;
   }
+  
   .detalle-grupo strong {
     display: block;
     font-size: 12px;
@@ -34,18 +39,19 @@
     opacity: 0.5;
     margin-bottom: 2px;
   }
+  
   .detalle-grupo p {
     margin: 0;
     font-size: 15px;
   }
+  
   .detalle-descripcion-wrapper {
-    flex: 1;
-    min-height: 0;
+    flex: 1;                 /* Ocupa el espacio disponible */
     margin-top: 12px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     padding-right: 4px;
+    overflow-y: visible;     /* Sin scroll interno */
   }
+  
   .detalle-descripcion-wrapper strong {
     display: block;
     font-size: 12px;
@@ -54,6 +60,7 @@
     opacity: 0.5;
     margin-bottom: 4px;
   }
+  
   .detalle-descripcion-wrapper p {
     margin: 0;
     font-size: 14px;
@@ -62,79 +69,36 @@
     white-space: pre-wrap;
     word-wrap: break-word;
   }
+  
   .detalle-descripcion-wrapper p a {
     color: var(--accent-blue);
     text-decoration: underline;
     word-break: break-all;
   }
-  .detalle-descripcion-wrapper::-webkit-scrollbar {
-    width: 4px;
-  }
-  .detalle-descripcion-wrapper::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .detalle-descripcion-wrapper::-webkit-scrollbar-thumb {
-    background: var(--text-dark);
-    border-radius: 4px;
-  }
-
-  /* ===== ESTILOS DEL MODAL (pantalla completa) ===== */
-  .modal-detalle-ejercicio .modal-overlay {
-    padding: 0 !important;
-  }
-  .modal-detalle-ejercicio .modal-box {
-    width: 100vw !important; /*width: 100%;*/
-    max-width: 90vw !important;
-    height: 100vh !important;
-    max-height: 97vh !important;
-    border-radius: var(--card-radius) !important; /*border-radius: 0 !important;*/
-    margin: 0 !important;
-    padding: 12px 12px 80px 12px !important; /*padding: 20px 16px 80px 16px !important;*/
-    display: grid !important;
-    grid-template-rows: auto 1fr !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-    box-shadow: 0 var(--shadow-offset) 0 var(--text-dark) !important; /*box-shadow: none !important;*/
-    border: var(--border-width) solid var(--text-dark) !important; /*border: none !important;*/
-    
-    background-color: var(--bg-card);/*background: #f5edd8;*/
-    position: relative;
-  }
-  .modal-detalle-ejercicio .modal-box > div {
-    display: flex !important;
-    flex-direction: column !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    height: 100% !important;
-  }
-
-  /* ===== BOTONES FIJOS ===== */
-  .detalle-botones-fijos {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 21000;
+  
+  /* ===== CONTENEDOR DE BOTONES (ahora en el flujo) ===== */
+  .detalle-botones-flujo {
+    margin-top: auto;          /* Empuja los botones al final si el contenido es corto */
+    padding-top: 16px;
+    padding-bottom: 4px;
+    border-top: 2px solid rgba(43, 37, 31, 0.15);  /* Separador opcional */
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    padding: 0 5px; /*padding: 0 16px;*/
-    width: 100%; /*width: auto;*/
-    max-width: 90%;/*width: auto;*/
-    box-sizing: border-box;/*box-sizing: border-box;*/
     justify-content: center;
-    background: transparent;
-    pointer-events: none;
-    
-    
+    flex-shrink: 0;           /* Evita que se encoja */
+    background-color: var(--bg-card);  /* Fondo para cubrir contenido subyacente */
   }
-  .detalle-botones-fijos .modal-boton {
-    pointer-events: auto;
-    flex: 1; /*flex: 0 1 auto;*/
-    padding: 10px 10px; /*padding: 10px 18px;*/
+  
+  .detalle-botones-flujo .modal-boton {
+    flex: 1 1 auto;
+    min-width: 80px;
+    padding: 10px 10px;
     font-size: 15px;
     display: flex;
     align-items: center;
-    gap: 0px;
+    justify-content: center;
+    gap: 6px;
     background-color: var(--bg-card);
     border: var(--border-width) solid var(--text-dark);
     border-radius: 14px;
@@ -144,31 +108,59 @@
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     color: var(--text-dark);
     font-family: 'Space Mono', monospace;
+    text-align: center;
   }
-  .detalle-botones-fijos .modal-boton:active {
+  
+  .detalle-botones-flujo .modal-boton:active {
     transform: scale(0.95);
     box-shadow: 0 1px 0 var(--text-dark);
   }
-  .detalle-botones-fijos .modal-boton.primario {
+  
+  .detalle-botones-flujo .modal-boton.primario {
     background-color: var(--text-dark);
     color: var(--bg-card);
   }
+  
   @media (max-width: 400px) {
-    .detalle-botones-fijos {
-      /*width: 95%;
-      gap: 8px;*/
-      
+    .detalle-botones-flujo .modal-boton {
+      flex: 1 1 0;
+      padding: 10px 8px;
+      font-size: 14px;
     }
-    .detalle-botones-fijos .modal-boton {
-      /*flex: 1 1 0;*//*flex: 1;*/
-      justify-content: center;/*justify-content: center;*/
-      padding: 10px 10px;/*padding: 14px 8px;*/
-      /*font-size: 20px;*/
-      /*width: 100px;*/
+    .detalle-botones-flujo .btn-text {
+      display: none; /* Puedes ocultar el texto en móviles si quieres, pero lo dejamos visible */
     }
-    .detalle-botones-fijos .btn-text {
-      display: none;
-    }
+  }
+  
+  /* ===== ESTILOS DEL MODAL (pantalla completa) ===== */
+  .modal-detalle-ejercicio .modal-overlay {
+    padding: 0 !important;
+  }
+  
+  .modal-detalle-ejercicio .modal-box {
+    width: 100vw !important;
+    max-width: 90vw !important;
+    height: 100vh !important;
+    max-height: 97vh !important;
+    border-radius: var(--card-radius) !important;
+    margin: 0 !important;
+    padding: 12px 12px 16px 12px !important;
+    display: grid !important;
+    grid-template-rows: auto 1fr !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 var(--shadow-offset) 0 var(--text-dark) !important;
+    border: var(--border-width) solid var(--text-dark) !important;
+    background-color: var(--bg-card);
+    position: relative;
+  }
+  
+  .modal-detalle-ejercicio .modal-box > div {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    height: 100% !important;
   }
 </style>
 
@@ -184,6 +176,7 @@
     <strong>Descripción</strong>
     <p id="detalleDescripcion"></p>
   </div>
+  <!-- Los botones se insertarán aquí mediante JavaScript, al final del flujo -->
 </div>
 
 <script>
@@ -191,10 +184,8 @@
   //  FUNCIÓN PARA CONVERTIR URLs EN ENLACES
   // ============================================================
   function convertirUrlsEnEnlaces(texto) {
-    // Expresión regular para detectar URLs (http, https, ftp, etc.)
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return texto.replace(urlRegex, function(url) {
-      // Escapar caracteres especiales para evitar XSS (opcional pero seguro)
       const urlEscapada = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
       return `<a href="${urlEscapada}" target="_blank" rel="noopener noreferrer">${urlEscapada}</a>`;
     });
@@ -215,34 +206,39 @@
 
     document.getElementById('detalleGrupo').textContent = ejercicio.grupo;
 
-    // Procesar descripción: convertir URLs en enlaces
     const descripcionElement = document.getElementById('detalleDescripcion');
     let descripcionTexto = ejercicio.descripcion || 'Sin descripción.';
-    // Aplicar conversión
     descripcionElement.innerHTML = convertirUrlsEnEnlaces(descripcionTexto);
 
-    // ===== Botones fijos =====
-    const container = document.createElement('div');
-    container.className = 'detalle-botones-fijos';
-    container.id = 'detalleBotonesFijos';
+    // ===== Crear contenedor de botones dentro del flujo =====
+    const detalleContenedor = document.querySelector('.detalle-contenido');
+    if (!detalleContenedor) return;
 
-    // Cerrar
+    // Eliminar contenedor de botones previo si existe (por si se reabre)
+    const btnContainerExistente = detalleContenedor.querySelector('.detalle-botones-flujo');
+    if (btnContainerExistente) btnContainerExistente.remove();
+
+    // Crear nuevo contenedor
+    const container = document.createElement('div');
+    container.className = 'detalle-botones-flujo';
+    container.id = 'detalleBotonesFlujo';
+
+    // Botón Cerrar
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-boton';
-    closeBtn.title = 'Cerrar'; 
+    closeBtn.title = 'Cerrar';
     closeBtn.innerHTML = `✖ <span class="btn-text">Cerrar</span>`;
     closeBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       modalRef.cerrar();
-      container.remove();
     });
     container.appendChild(closeBtn);
 
-    // Reproducir (si hay vídeo)
+    // Botón Reproducir (si hay vídeo)
     if (ejercicio.video && ejercicio.video.trim() !== '') {
       const playBtn = document.createElement('button');
       playBtn.className = 'modal-boton primario';
-      playBtn.title = 'Reproducir vídeo'; 
+      playBtn.title = 'Reproducir vídeo';
       playBtn.innerHTML = `▶ <span class="btn-text">Reproducir</span>`;
       playBtn.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -251,7 +247,7 @@
       container.appendChild(playBtn);
     }
 
-    // Editar
+    // Botón Editar
     const editBtn = document.createElement('button');
     editBtn.className = 'modal-boton primario';
     editBtn.title = 'Editar';
@@ -259,14 +255,14 @@
     editBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       modalRef.cerrar();
-      container.remove();
       setTimeout(() => window.abrirFormularioEdicion(ejercicio), 200);
     });
     container.appendChild(editBtn);
 
-    document.body.appendChild(container);
+    // Añadir el contenedor al final del .detalle-contenido
+    detalleContenedor.appendChild(container);
 
-    // Asegurar limpieza al cerrar el modal
+    // Asegurar que el contenedor se elimine al cerrar el modal
     const originalCerrar = modalRef.cerrar;
     modalRef.cerrar = function() {
       originalCerrar();
