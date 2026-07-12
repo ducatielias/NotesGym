@@ -142,19 +142,25 @@
   .modal-detalle-ejercicio .modal-box {
     width: 100vw !important;
     max-width: 90vw !important;
-    height: 100vh !important;
-    max-height: 97vh !important;
+    height: 100% !important; /*height: 100vh !important;*/ /* Se adapta al contenedor seguro o overlay */
+    max-height: 92dvh !important; /*max-height: 97vh !important;*/ /* dvh = Dynamic Viewport Height (unidades modernas de altura dinámica) */
     border-radius: var(--card-radius) !important;
-    margin: 0 !important;
+    margin: auto !important; /*margin: 0 !important;*/ /* Centra el modal verticalmente en el espacio disponible */
     padding: 12px 12px 16px 12px !important;
     display: grid !important;
-    grid-template-rows: auto 1fr !important;
-    overflow: hidden !important;
+    grid-template-rows: auto 1fr !important; /* Mantiene la cabecera arriba y el contenido abajo */
+    overflow: hidden !important; /* Evita el scroll global del modal */
     box-sizing: border-box !important;
     box-shadow: 0 var(--shadow-offset) 0 var(--text-dark) !important;
     border: var(--border-width) solid var(--text-dark) !important;
     background-color: var(--bg-card);
     position: relative;
+    
+    
+    
+    
+    
+    
   }
   
   .modal-detalle-ejercicio .modal-box > div {
