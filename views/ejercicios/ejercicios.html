@@ -545,16 +545,16 @@
       })
       .then(html => {
         const modalRef = mostrarModal({
-          titulo: `${iconMap[ejercicio.grupo] || defaultIcon} ${ejercicio.nombre}`,/*titulo: `${emojiMap[ejercicio.grupo] || '🏋️'} ${ejercicio.nombre}`,*/
+          titulo: `${iconMap[ejercicio.grupo] || defaultIcon} ${ejercicio.nombre}`,
           contenido: html,
           botones: []
         });
-
+        
         // Añadir clase para estilos de pantalla completa
         setTimeout(() => {
           const overlay = document.querySelector('.modal-overlay.active');
           if (overlay) overlay.classList.add('modal-detalle-ejercicio');
-        }, 50);
+        }, 20);
 
         // Esperar a que el DOM esté listo y ejecutar scripts
         setTimeout(() => {
